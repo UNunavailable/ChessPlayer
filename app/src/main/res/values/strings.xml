@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">chessPlayer</string>
+    <string name="app_name">Chess Player</string>
+
+    <string name="board_notation">1. c4 e5 2. Nc3 Nf6 3. d3 d6 4. Kd2 Qe7 5. Qa4+ Bd7 6. Qxd7+ Kxd7 7. Nd5 Qe6 8. Nxc7 Kxc7</string>
+
 </resources>
