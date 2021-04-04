@@ -7,12 +7,19 @@ import android.widget.ImageView;
 public abstract class aFigure {
     public int posX;
     public int posY;
-    public int figureName;
+    public int figureID;
     public ImageView image;
     public boolean ifWhite;
 
     public abstract void lightUp();
     public abstract void move();
+
+    aFigure(ImageView image, int posX, int posY) {
+        this.image = image;
+        this.posX = posX;
+        this.posY = posY;
+        this.image.setOnTouchListener(onTouchListener());
+    }
 
     public View.OnTouchListener onTouchListener() {
         return new View.OnTouchListener() {
@@ -23,7 +30,7 @@ public abstract class aFigure {
                         lightUp();
                         break;
                     case MotionEvent.ACTION_UP:
-
+                        move();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         image.setX(event.getRawX());

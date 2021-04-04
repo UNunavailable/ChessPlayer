@@ -6,9 +6,10 @@ import com.example.chessplayer.Board;
 
 public class Pawn extends aFigure {
     Pawn(ImageView image, int posX, int posY) {
-        figureName = Board.PAWN;
-        this.image = image;
-        this.posX = posX;
-        this.posY = posY;
+        super(image, posX, posY);
+        figureID = Board.PAWN;
     }
+
+    public void lightUp() {};
+    public void move() {};
 }
