@@ -11,6 +11,13 @@
         android:layout_weight="2"
         android:src="@drawable/board"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/button_start"
+        android:id="@+id/button_start" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,25 +37,33 @@ public class BoardFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
+        Button button = (Button) view.findViewById(R.id.button_start);
+        button.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Coords[][] coordinates = new Board().tileCoords;
+
+                notation.setText(null);
+
+                int top = board.getTop()/16;
+                int left = board.getLeft()/16;
+                int bottom = board.getBottom()/16;
+                int right = board.getRight()/16;
+
+                for (int x=0;x<8;x++){
+                    for (int y=0;y<8;y++){
+                        coordinates[x][y]=new Coords(bottom*(x+1), right*(x+1));
+                    }
+                }
+
+            }
+        });
+
+
         super.onViewCreated(view, savedInstanceState);
 
-        notation.setText(null);
-
-        int[] boardCordinates = new int[2];
-        board.getLocationOnScreen(boardCordinates);
-
-        int x = boardCordinates[0];
-        int y = boardCordinates[1];
-
-
-        notation.setText(x + " " + y);
-
-        System.out.println(x + " " + y);
-
-
-        Log.e("onStart", x + " " + y);
     }
-
-
-
 }
