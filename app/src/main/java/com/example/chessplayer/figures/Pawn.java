@@ -1,19 +1,15 @@
 package com.example.chessplayer.figures;
 
-import android.view.MotionEvent;
-import android.view.View;
+import android.widget.ImageView;
+
 import com.example.chessplayer.Board;
 
 public class Pawn extends aFigure {
-    Pawn() {
-        figureName = Board.PAWN;
+    Pawn(ImageView image, int posX, int posY) {
+        super(image, posX, posY);
+        figureID = Board.PAWN;
     }
-    public View.OnTouchListener onTouchListener() {
-        return new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                return true;
-            }
-        };
-    }
+
+    public void lightUp() {};
+    public void move() {};
 }
