@@ -4,17 +4,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.chessplayer.Board;
+import com.example.chessplayer.Constants;
+
 public abstract class aFigure {
     public int posX;
     public int posY;
     public int figureID;
     public ImageView image;
-    public boolean ifWhite;
+    public boolean isWhite;
+    public Board boardInstance;
 
-    public abstract void lightUp();
-    public abstract void move();
+    protected abstract Board.Tile[] chooseTiles();
+    protected abstract void move();
 
-    aFigure(ImageView image, int posX, int posY) {
+    aFigure(Board boardInstance, ImageView image, int posX, int posY) {
+        this.boardInstance = boardInstance;
         this.image = image;
         this.posX = posX;
         this.posY = posY;
@@ -41,5 +46,16 @@ public abstract class aFigure {
             }
         };
     }
+
+    protected void lightUp() {
+        Board.Tile[] tile = chooseTiles();
+        for (int i = 0; i<tile.length; i++) {
+            if (boardInstance.canMove(tile[i]) == Constants.EMPTY
+                    || boardInstance.canMove(tile[i]) == Constants.FIGURE)
+            {
+                boardInstance.lightUpTile(tile[i]);
+            }
+        }
+    };
 
 }
