@@ -30,11 +30,13 @@ public abstract class aFigure {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+                Board.Tile[] moveTiles = chooseTiles();
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        lightUp();
+                        lightUp(moveTiles);
                         break;
                     case MotionEvent.ACTION_UP:
+                        delightUp(moveTiles);
                         move();
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -47,13 +49,22 @@ public abstract class aFigure {
         };
     }
 
-    protected void lightUp() {
-        Board.Tile[] tile = chooseTiles();
+    protected void lightUp(Board.Tile[] tile) {
         for (int i = 0; i<tile.length; i++) {
             if (boardInstance.canMove(tile[i]) == Constants.EMPTY
                     || boardInstance.canMove(tile[i]) == Constants.FIGURE)
             {
                 boardInstance.lightUpTile(tile[i]);
+            }
+        }
+    };
+
+    protected void delightUp(Board.Tile[] tile) {
+        for (int i = 0; i<tile.length; i++) {
+            if (boardInstance.canMove(tile[i]) == Constants.EMPTY
+                    || boardInstance.canMove(tile[i]) == Constants.FIGURE)
+            {
+                boardInstance.delightUpTile(tile[i]);
             }
         }
     };

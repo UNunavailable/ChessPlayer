@@ -3,7 +3,10 @@ package com.example.chessplayer;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,15 +24,15 @@ import android.widget.TextView;
 
 
 public class BoardFragment extends Fragment {
-
-    ImageView board;
+    Board boardInstance;
     TextView notation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_board, container, false);
-        board = (ImageView) rootView.findViewById(R.id.image_board);
+        boardInstance = new Board();
+        boardInstance.board = (ImageView) rootView.findViewById(R.id.image_board);
         notation = (TextView) rootView.findViewById(R.id.text_notation);
 
         return rootView;
@@ -44,21 +47,43 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                Coords[][] coordinates = new Board().tileCoords;
-
+                boardInstance.init();
                 notation.setText(null);
 
-                int top = board.getTop()/16;
-                int left = board.getLeft()/16;
-                int bottom = board.getBottom()/16;
-                int right = board.getRight()/16;
+                boolean checkCoords = true;
+                if (checkCoords) {
+                    Bitmap oldBitmap = ((BitmapDrawable) boardInstance.board.getDrawable()).getBitmap();
+                    // copying to newBitmap for manipulation
+                    Bitmap newBitmap = oldBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                    // traversing each pixel in Image as an 2D Array
 
-                for (int x=0;x<8;x++){
-                    for (int y=0;y<8;y++){
-                        coordinates[x][y]=new Coords(bottom*(x+1), right*(x+1));
+                    for (int x = 0; x < boardInstance.tileCoords.length; x++) {
+                        for (int y = 0; y < boardInstance.tileCoords.length; y++) {
+                            for (int i = boardInstance.tileCoords[x][y].X; i < boardInstance.tileCoords[x][y].X + 20; i++) {
+                                for (int j = boardInstance.tileCoords[x][y].Y; j < boardInstance.tileCoords[x][y].Y + 20; j++) {
+                                    // getting each pixel
+                                    int oldPixel = oldBitmap.getPixel(i, j);
+
+                                    // each pixel is made from RED_BLUE_GREEN_ALPHA
+                                    // so, getting current values of pixel
+                                    int oldRed = Color.red(oldPixel);
+                                    int oldBlue = Color.blue(oldPixel);
+                                    int oldGreen = Color.green(oldPixel);
+                                    int oldAlpha = Color.alpha(oldPixel);
+
+                                    int newRed = (int) (oldRed / 2 + 80);
+                                    int newGreen = (int) (oldGreen / 2 + 80);
+                                    int newBlue = (int) (100);
+
+                                    // applying new pixel values from above to newBitmap
+                                    int newPixel = Color.argb(oldAlpha, newRed, newGreen, newBlue);
+                                    newBitmap.setPixel(i, j, newPixel);
+                                }
+                            }
+                        }
                     }
+                    boardInstance.board.setImageBitmap(newBitmap);
                 }
-
             }
         });
 
