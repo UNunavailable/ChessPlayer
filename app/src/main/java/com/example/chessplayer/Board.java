@@ -12,6 +12,7 @@ public class Board {
     public ImageView board;
     public aFigure[][] figures = new aFigure[8][8]; // массив фигур
     public Coords[][] tileCoords = new Coords[8][8]; // массив координат
+    public int tileSize;
 
     // Method
     public void init() { // Инициализация доски
@@ -70,6 +71,8 @@ public class Board {
                 }
             }
         }
+
+        tileSize = tileCoords[1][1].X - tileCoords[0][0].X;
     };
 
     public void lightUpTile(Tile tile) {}; // подсветка тайла

@@ -39,6 +39,12 @@ public class BoardFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        boardInstance.board.post(new Runnable() { // Метод сработает как только картинка поля загрузится
+            @Override
+            public void run() {
+                boardInstance.init();
+            }
+        });
 
         Button button = (Button) view.findViewById(R.id.button_start);
         button.setOnClickListener(new View.OnClickListener()
@@ -47,9 +53,8 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                boardInstance.init();
                 notation.setText(null);
-
+                // TODO Удалить проверку координат
                 boolean checkCoords = true;
                 if (checkCoords) {
                     Bitmap oldBitmap = ((BitmapDrawable) boardInstance.board.getDrawable()).getBitmap();
@@ -59,8 +64,8 @@ public class BoardFragment extends Fragment {
 
                     for (int x = 0; x < boardInstance.tileCoords.length; x++) {
                         for (int y = 0; y < boardInstance.tileCoords.length; y++) {
-                            for (int i = boardInstance.tileCoords[x][y].X; i < boardInstance.tileCoords[x][y].X + 20; i++) {
-                                for (int j = boardInstance.tileCoords[x][y].Y; j < boardInstance.tileCoords[x][y].Y + 20; j++) {
+                            for (int i = boardInstance.tileCoords[x][y].X + 10; i < boardInstance.tileCoords[x][y].X + boardInstance.tileSize - 10; i++) {
+                                for (int j = boardInstance.tileCoords[x][y].Y + 10; j < boardInstance.tileCoords[x][y].Y + boardInstance.tileSize - 10; j++) {
                                     // getting each pixel
                                     int oldPixel = oldBitmap.getPixel(i, j);
 
