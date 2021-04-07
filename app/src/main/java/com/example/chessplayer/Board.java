@@ -10,8 +10,7 @@ import com.example.chessplayer.figures.aFigure;
 public class Board {
     // Var
     public ImageView board;
-    public aFigure[][] figures = new aFigure[8][8]; // массив фигур
-    public Coords[][] tileCoords = new Coords[8][8]; // массив координат
+    public Tile[][] tiles = new Tile[8][8]; // массив фигур
     public int tileSize;
 
     // Method
@@ -20,7 +19,7 @@ public class Board {
         int left = board.getLeft();
         for (int x=0;x<8;x++){
             for (int y=0;y<8;y++){
-                tileCoords[x][y]=new Board.Coords(0, 0);
+                tiles[x][y]=new Board.Tile(0, 0);
             }
         }
 
@@ -31,8 +30,8 @@ public class Board {
         for (int x = left; x < board.getWidth(); x++) {
             if (Color.red(bitmap.getPixel(x, 10)) == 255) {
                 if (!White) {
-                    for (int y = 0; y < tileCoords.length; y++) {
-                        tileCoords[x_i][y] = new Board.Coords(x, tileCoords[x_i][y].Y);
+                    for (int y = 0; y < tiles.length; y++) {
+                        tiles[x_i][y] = new Board.Tile(x, tiles[x_i][y].Y);
                     }
                     x_i++;
                     White = !White;
@@ -40,8 +39,8 @@ public class Board {
             }
             if (Color.red(bitmap.getPixel(x, 10)) == 0) {
                 if (White) {
-                    for (int y = 0; y < tileCoords.length; y++) {
-                        tileCoords[x_i][y] = new Board.Coords(x, tileCoords[x_i][y].Y);
+                    for (int y = 0; y < tiles.length; y++) {
+                        tiles[x_i][y] = new Board.Tile(x, tiles[x_i][y].Y);
                     }
                     x_i++;
                     White = !White;
@@ -54,8 +53,8 @@ public class Board {
         for (int y = top; y < board.getHeight(); y++) {
             if (Color.red(bitmap.getPixel(10, y)) == 255) {
                 if (!White) {
-                    for (int x = 0; x < tileCoords.length; x++) {
-                        tileCoords[x][y_i] = new Board.Coords(tileCoords[x][y_i].X, y);
+                    for (int x = 0; x < tiles.length; x++) {
+                        tiles[x][y_i] = new Board.Tile(tiles[x][y_i].X, y);
                     }
                     y_i++;
                     White = !White;
@@ -63,8 +62,8 @@ public class Board {
             }
             if (Color.red(bitmap.getPixel(10, y)) == 0) {
                 if (White) {
-                    for (int x = 0; x < tileCoords.length; x++) {
-                        tileCoords[x][y_i] = new Board.Coords(tileCoords[x][y_i].X, y);
+                    for (int x = 0; x < tiles.length; x++) {
+                        tiles[x][y_i] = new Board.Tile(tiles[x][y_i].X, y);
                     }
                     y_i++;
                     White = !White;
@@ -72,25 +71,18 @@ public class Board {
             }
         }
 
-        tileSize = tileCoords[1][1].X - tileCoords[0][0].X;
+        tileSize = tiles[1][1].X - tiles[0][0].X;
     };
-
     public void lightUpTile(Tile tile) {}; // подсветка тайла
     public void delightUpTile(Tile tile) {}; // отсветка тайла
     public int canMove(Tile tile) {return 0;}; // проверка на возможность хода фигуры
+    public void moveFigure() {};
+    public void deleteFigure() {};
+    public void addFigure() {};
     public void gameEnd() {}; // конец игры
-    public Coords findNearestTile(Coords coords) {return tileCoords[0][0];}; // находит ближайшие координаты тайла
+    public Tile findNearestTile(Tile tile) {return tiles[0][0];}; // находит ближайшие координаты тайла
 
     // Struct
-    public static class Coords {
-        public int X;
-        public int Y;
-        public Coords(int X, int Y) {
-            this.X = X;
-            this.Y = Y;
-        }
-    }
-
     public static class Tile {
         public int X;
         public int Y;
@@ -98,5 +90,6 @@ public class Board {
             this.X = X;
             this.Y = Y;
         }
+        public aFigure figure;
     }
 }

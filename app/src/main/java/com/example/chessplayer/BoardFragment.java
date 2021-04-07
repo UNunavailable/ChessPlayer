@@ -62,10 +62,10 @@ public class BoardFragment extends Fragment {
                     Bitmap newBitmap = oldBitmap.copy(Bitmap.Config.ARGB_8888, true);
                     // traversing each pixel in Image as an 2D Array
 
-                    for (int x = 0; x < boardInstance.tileCoords.length; x++) {
-                        for (int y = 0; y < boardInstance.tileCoords.length; y++) {
-                            for (int i = boardInstance.tileCoords[x][y].X + 10; i < boardInstance.tileCoords[x][y].X + boardInstance.tileSize - 10; i++) {
-                                for (int j = boardInstance.tileCoords[x][y].Y + 10; j < boardInstance.tileCoords[x][y].Y + boardInstance.tileSize - 10; j++) {
+                    for (int x = 0; x < boardInstance.tiles.length; x++) {
+                        for (int y = 0; y < boardInstance.tiles.length; y++) {
+                            for (int i = boardInstance.tiles[x][y].X + 10; i < boardInstance.tiles[x][y].X + boardInstance.tileSize - 10; i++) {
+                                for (int j = boardInstance.tiles[x][y].Y + 10; j < boardInstance.tiles[x][y].Y + boardInstance.tileSize - 10; j++) {
                                     // getting each pixel
                                     int oldPixel = oldBitmap.getPixel(i, j);
 
