@@ -11,7 +11,8 @@ public class Board {
     // Var
     public ImageView board;
     public Tile[][] tiles = new Tile[8][8]; // массив фигур
-    public int tileSize;
+    public int tileWidth;
+    public int tileHeight;
 
     // Method
     public void init() { // Инициализация доски
@@ -71,7 +72,8 @@ public class Board {
             }
         }
 
-        tileSize = tiles[1][1].X - tiles[0][0].X;
+        tileWidth = tiles[1][1].X - tiles[0][0].X;
+        tileHeight = tiles[1][1].Y - tiles[0][0].Y;
     };
     public void lightUpTile(Tile tile) {}; // подсветка тайла
     public void delightUpTile(Tile tile) {}; // отсветка тайла
