@@ -8,7 +8,7 @@ import com.example.chessplayer.Constants;
 public class Pawn extends aFigure {
     private boolean haveMoved = false;
 
-    Pawn(Board boardInstance,ImageView image, int posX, int posY) {
+    public Pawn(Board boardInstance,ImageView image, int posX, int posY) {
         super(boardInstance, image, posX, posY);
         figureID = Constants.PAWN;
     }

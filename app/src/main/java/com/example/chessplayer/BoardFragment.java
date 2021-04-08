@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -19,11 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 public class BoardFragment extends Fragment {
+    FrameLayout layout;
     Board boardInstance;
     TextView notation;
 
@@ -31,7 +35,7 @@ public class BoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_board, container, false);
-        boardInstance = new Board();
+        boardInstance = new Board(this);
         boardInstance.board = (ImageView) rootView.findViewById(R.id.image_board);
         notation = (TextView) rootView.findViewById(R.id.text_notation);
 
@@ -39,6 +43,7 @@ public class BoardFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        layout = getView().findViewById(R.id.boardFrame);
         boardInstance.board.post(new Runnable() { // Метод сработает как только картинка поля загрузится
             @Override
             public void run() {
@@ -55,7 +60,7 @@ public class BoardFragment extends Fragment {
             {
                 notation.setText(null);
                 // TODO Удалить проверку координат
-                boolean checkCoords = true;
+                boolean checkCoords = false;
                 if (checkCoords) {
                     Bitmap oldBitmap = ((BitmapDrawable) boardInstance.board.getDrawable()).getBitmap();
                     // copying to newBitmap for manipulation
@@ -64,8 +69,8 @@ public class BoardFragment extends Fragment {
 
                     for (int x = 0; x < boardInstance.tiles.length; x++) {
                         for (int y = 0; y < boardInstance.tiles.length; y++) {
-                            for (int i = boardInstance.tiles[x][y].X + 10; i < boardInstance.tiles[x][y].X + boardInstance.tileSize - 10; i++) {
-                                for (int j = boardInstance.tiles[x][y].Y + 10; j < boardInstance.tiles[x][y].Y + boardInstance.tileSize - 10; j++) {
+                            for (int i = boardInstance.tiles[x][y].X + 10; i < boardInstance.tiles[x][y].X + boardInstance.tileWidth - 10; i++) {
+                                for (int j = boardInstance.tiles[x][y].Y + 10; j < boardInstance.tiles[x][y].Y + boardInstance.tileHeight - 10; j++) {
                                     // getting each pixel
                                     int oldPixel = oldBitmap.getPixel(i, j);
 
@@ -91,9 +96,6 @@ public class BoardFragment extends Fragment {
                 }
             }
         });
-
-
         super.onViewCreated(view, savedInstanceState);
-
     }
 }

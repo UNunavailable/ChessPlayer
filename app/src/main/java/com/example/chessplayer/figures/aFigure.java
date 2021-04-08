@@ -10,7 +10,6 @@ import com.example.chessplayer.Constants;
 public abstract class aFigure {
     public int posX;
     public int posY;
-    public int figureID;
     public ImageView image;
     public boolean isWhite;
     public Board boardInstance;
