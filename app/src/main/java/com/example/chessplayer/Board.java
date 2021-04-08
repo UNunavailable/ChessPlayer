@@ -106,16 +106,10 @@ public class Board {
                         tileWidth,
                         tileHeight
                 );
-
                 fragInstance.layout.addView(imageView, layoutParams);
-                int a = tiles[x][y].X;
-                int b = tiles[x][y].Y;
-                float c = board.getMeasuredWidth();
-                float d = board.getMeasuredHeight();
-                imageView.setX(a*c/1024);
-                imageView.setY(b*d/1024);
+                imageView.setX(tiles[x][y].X*board.getMeasuredWidth()/1024);
+                imageView.setY(tiles[x][y].Y*board.getMeasuredHeight()/1024);
                 tiles[x][y].figure = new Pawn(this, imageView, x, y);
-
                 break;
             default:
                 break;
