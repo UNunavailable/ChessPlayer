@@ -67,6 +67,7 @@ public class BoardFragment extends Fragment {
                 boardInstance.addFigure(5,6,Constants.PAWN);
                 boardInstance.addFigure(6,6,Constants.PAWN);
                 boardInstance.addFigure(6,6,Constants.PAWN);
+                boardInstance.addFigure(7,6,Constants.PAWN);
                 // TODO Удалить проверку координат
                 boolean checkCoords = false;
                 if (checkCoords) {

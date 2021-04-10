@@ -17,30 +17,44 @@ public abstract class aFigure {
     protected abstract Board.Tile[] chooseTiles();
     protected abstract void move();
 
-    aFigure(Board boardInstance, ImageView image, int posX, int posY) {
+    aFigure(Board boardInstance, ImageView image, int posX, int posY, boolean isWhite) {
         this.boardInstance = boardInstance;
         this.image = image;
         this.posX = posX;
         this.posY = posY;
         this.image.setOnTouchListener(onTouchListener());
+        this.isWhite = isWhite;
     }
 
     public View.OnTouchListener onTouchListener() {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                Board.Tile[] moveTiles = chooseTiles();
+                int[] location = new int[2];
+                boardInstance.board.getLocationOnScreen(location);
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        lightUp(moveTiles);
+                        image.setX(event.getRawX()-location[0]-image.getMeasuredWidth()/2);
+                        image.setY(event.getRawY()-location[1]-image.getMeasuredHeight()/2);
+                        lightUp(chooseTiles());
                         break;
                     case MotionEvent.ACTION_UP:
+                        Board.Tile[] moveTiles = chooseTiles();
                         delightUp(moveTiles);
+                        int move[] = boardInstance.findNearestTile(
+                                (int)(event.getRawX()-location[0]-image.getMeasuredWidth()/2),
+                                (int)(event.getRawY()-location[1]-image.getMeasuredHeight()/2),
+                                moveTiles);
+                        if (move[2] < 800) {
+                            image.setX(move[0]*boardInstance.board.getMeasuredWidth()/1024);
+                            image.setY(move[1]*boardInstance.board.getMeasuredHeight()/1024);
+                        } else {
+                            image.setX(0);
+                            image.setY(0);
+                        }
                         move();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int[] location = new int[2];
-                        boardInstance.board.getLocationOnScreen(location);
                         image.setX(event.getRawX()-location[0]-image.getMeasuredWidth()/2);
                         image.setY(event.getRawY()-location[1]-image.getMeasuredHeight()/2);
                         break;

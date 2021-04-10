@@ -27,7 +27,7 @@ public class Board {
     public Board(BoardFragment fragInstance) {
         this.fragInstance = fragInstance;
     }
-    public void init() { // Инициализация доски
+    public void init() {
         int top = (int) board.getX();
         int left = (int) board.getY();
         for (int x=0;x<8;x++){
@@ -86,17 +86,23 @@ public class Board {
 
         tileWidth = tiles[1][1].X - tiles[0][0].X;
         tileHeight = tiles[1][1].Y - tiles[0][0].Y;
-    };
+    }; // Используется при запуске программы. Вызывается после того как прогрузятся все View.
+
     public void lightUpTile(Tile tile) {}; // подсветка тайла
+
     public void delightUpTile(Tile tile) {}; // отсветка тайла
+
     public int canMove(Tile tile) {return 0;}; // проверка на возможность хода фигуры
+
     public void moveFigure() {};
+
     public void deleteFigure(int x, int y) {
         tiles[x][y].figure.image.setVisibility(View.GONE);
         tiles[x][y].figure = null;
-    };
-    public void addFigure(int x, int y, int figureCode) {
-        if(tiles[x][y].figure != null) { return; }
+    }; //
+
+    public void addFigure(int posX, int posY, int figureCode) {
+        if(tiles[posX][posY].figure != null) { return; }
 
         switch (figureCode) {
             case Constants.PAWN:
@@ -107,19 +113,55 @@ public class Board {
                         tileHeight
                 );
                 fragInstance.layout.addView(imageView, layoutParams);
-                imageView.setX(tiles[x][y].X*board.getMeasuredWidth()/1024);
-                imageView.setY(tiles[x][y].Y*board.getMeasuredHeight()/1024);
-                tiles[x][y].figure = new Pawn(this, imageView, x, y);
+                imageView.setX(tiles[posX][posY].X*board.getMeasuredWidth()/1024);
+                imageView.setY(tiles[posX][posY].Y*board.getMeasuredHeight()/1024);
+                tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, true);
                 break;
             default:
                 break;
         }
 
-    };
+    }; // Добавляет выбранную фигуру на выбранный номер тайла.
+
     public void checkFinder(Tile attacker, Tile king) {}
+
     public void checkMateFinder(Tile attacker, Tile king) {}
+
     public void gameEnd() {}; // конец игры
-    public Tile findNearestTile(Tile tile) {return tiles[0][0];}; // находит ближайшие координаты тайла
+
+    public int[] findNearestTile(int X, int Y, Tile[] Tiles) {
+        int distance[] = new int[Tiles.length];
+        for (int i = 0; i < Tiles.length; i++) {
+            distance[i] = distanceTwoPoints(X, Y, Tiles[i].X, Tiles[i].Y);
+        }
+        int maxDist = getMinIndex(distance);
+        return new int[]{ Tiles[maxDist].X, Tiles[maxDist].Y, distance[maxDist]};
+    }; // находит ближайшие координаты тайла используя заданные номера тайлов и координаты. Возвращает номер тайла и расстояние до него.
+
+    private int distanceTwoPoints(int X1, int Y1, int X2, int Y2) {
+        int temp = (int)Math.sqrt((X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1));
+        return temp;
+    }
+
+    private int getMinIndex(int[] inputArray){
+        int maxValue = inputArray[0];
+        int index = 0;
+        for(int i=1;i < inputArray.length;i++){
+            if(inputArray[i] < maxValue){
+                maxValue = inputArray[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public boolean checkOutOfBounds(int posX, int posY) {
+        if(posX>7) return false;
+        if(posY>7) return false;
+        if(posX<0) return false;
+        if(posY<0) return false;
+        return true;
+    }
 
     // Struct
     public static class Tile {
