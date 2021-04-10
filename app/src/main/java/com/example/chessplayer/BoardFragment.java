@@ -59,6 +59,14 @@ public class BoardFragment extends Fragment {
             public void onClick(View v)
             {
                 notation.setText(null);
+                boardInstance.addFigure(0,6,Constants.PAWN);
+                boardInstance.addFigure(1,6,Constants.PAWN);
+                boardInstance.addFigure(2,6,Constants.PAWN);
+                boardInstance.addFigure(3,6,Constants.PAWN);
+                boardInstance.addFigure(4,6,Constants.PAWN);
+                boardInstance.addFigure(5,6,Constants.PAWN);
+                boardInstance.addFigure(6,6,Constants.PAWN);
+                boardInstance.addFigure(6,6,Constants.PAWN);
                 // TODO Удалить проверку координат
                 boolean checkCoords = false;
                 if (checkCoords) {

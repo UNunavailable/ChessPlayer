@@ -10,7 +10,6 @@ public class Pawn extends aFigure {
 
     public Pawn(Board boardInstance,ImageView image, int posX, int posY) {
         super(boardInstance, image, posX, posY);
-        figureID = Constants.PAWN;
     }
 
     protected Board.Tile[] chooseTiles() {

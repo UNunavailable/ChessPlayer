@@ -39,8 +39,10 @@ public abstract class aFigure {
                         move();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        image.setX(event.getRawX());
-                        image.setY(event.getRawY());
+                        int[] location = new int[2];
+                        boardInstance.board.getLocationOnScreen(location);
+                        image.setX(event.getRawX()-location[0]-image.getMeasuredWidth()/2);
+                        image.setY(event.getRawY()-location[1]-image.getMeasuredHeight()/2);
                         break;
                 }
                 return true;

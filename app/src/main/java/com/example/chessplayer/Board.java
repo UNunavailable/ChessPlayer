@@ -116,6 +116,8 @@ public class Board {
         }
 
     };
+    public void checkFinder(Tile attacker, Tile king) {}
+    public void checkMateFinder(Tile attacker, Tile king) {}
     public void gameEnd() {}; // конец игры
     public Tile findNearestTile(Tile tile) {return tiles[0][0];}; // находит ближайшие координаты тайла
 
