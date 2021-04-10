@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import com.example.chessplayer.Board;
 import com.example.chessplayer.Constants;
 
+import java.util.ArrayList;
+
 public class Pawn extends aFigure {
     private boolean haveMoved = false;
 
@@ -13,17 +15,27 @@ public class Pawn extends aFigure {
     }
 
     protected Board.Tile[] chooseTiles() {
-        int length = 2;
-        if(posX>0){length++;}
-        if(posX<7){length++;}
-        int i = 0;
-        Board.Tile[] tile = new Board.Tile[length];
-        tile[i] = boardInstance.tiles[posX][posY - 2*(isWhite?1:0) + 1];
-        i++;
-        if(posX>0){ tile[i] = boardInstance.tiles[posX - 1][posY - 2*(isWhite?1:0) + 1]; i++;}
-        if(posX<7){ tile[i] = boardInstance.tiles[posX + 1][posY - 2*(isWhite?1:0) + 1]; i++;}
-        if (!haveMoved) {tile[i] = boardInstance.tiles[posX + 1][posY - 3*(isWhite?1:0) + 2];}
-        return tile;
+        ArrayList<Board.Tile> tiles = new ArrayList<Board.Tile>();
+        int[] X = new int[]{posX, posX - 1, posX + 1, posX + 1};
+        int[] Y = new int[]{
+                posY - 2*(isWhite?1:0) + 1,
+                posY - 2*(isWhite?1:0) + 1,
+                posY - 2*(isWhite?1:0) + 1,
+                posY - 3*(isWhite?1:0) + 2};
+        for (int i = 0; i < X.length; i++) {
+            if(i<X.length-1) {
+                if(boardInstance.checkOutOfBounds(X[i], Y[i])) {
+                    tiles.add(boardInstance.tiles[X[i]][Y[i]]);
+                }
+            } else {
+                if(boardInstance.checkOutOfBounds(X[i], Y[i]) && !haveMoved) {
+                    tiles.add(boardInstance.tiles[X[i]][Y[i]]);
+                }
+            }
+        }
+        Board.Tile[] result = new Board.Tile[tiles.size()];
+        result = tiles.toArray(result);
+        return result;
     }
 
     protected void move() {};
