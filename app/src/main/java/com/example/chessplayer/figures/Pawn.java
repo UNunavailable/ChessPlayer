@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class Pawn extends aFigure {
     private boolean haveMoved = false;
 
-    public Pawn(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite) {
-        super(boardInstance, image, posX, posY, isWhite);
+    public Pawn(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
+        super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
-    protected Board.Tile[] chooseTiles() {
-        ArrayList<Board.Tile> tiles = new ArrayList<Board.Tile>();
+    protected int[][] chooseTiles() {
+        ArrayList<int[]> tiles = new ArrayList<int[]>();
         int[] X = new int[]{posX, posX - 1, posX + 1, posX};
         int[] Y = new int[]{
                 posY - 2*(isWhite?1:0) + 1,
@@ -25,15 +25,15 @@ public class Pawn extends aFigure {
         for (int i = 0; i < X.length; i++) {
             if(i<X.length-1) {
                 if(boardInstance.checkOutOfBounds(X[i], Y[i])) {
-                    tiles.add(boardInstance.tiles[X[i]][Y[i]]);
+                    tiles.add(new int[]{X[i], Y[i]});
                 }
             } else {
                 if(boardInstance.checkOutOfBounds(X[i], Y[i]) && !haveMoved) {
-                    tiles.add(boardInstance.tiles[X[i]][Y[i]]);
+                    tiles.add(new int[]{X[i], Y[i]});
                 }
             }
         }
-        Board.Tile[] result = new Board.Tile[tiles.size()];
+        int[][] result = new int[tiles.size()][2];
         result = tiles.toArray(result);
         return result;
     }

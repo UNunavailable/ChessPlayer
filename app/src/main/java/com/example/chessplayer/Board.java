@@ -24,11 +24,14 @@ public class Board {
     public int tileHeight;
     public float scaleWidth;
     public float scaleHeight;
+    private boolean whiteTurn = true;
 
-    // Method
-    public Board(BoardFragment fragInstance) {
+    // Methods
+    public Board(BoardFragment fragInstance, ImageView board) {
         this.fragInstance = fragInstance;
+        this.board = board;
     }
+
     public void init() {
         int top = (int) board.getX();
         int left = (int) board.getY();
@@ -98,34 +101,54 @@ public class Board {
 
     public int canMove(Tile tile) {return 0;}; // проверка на возможность хода фигуры
 
-    public void moveFigure() {};
+    public void makeTurn(int posX, int posY, int whereX, int whereY) {
+        tiles[posX][posY].figure.image.setX(tiles[whereX][whereY].X*scaleWidth);
+        tiles[posX][posY].figure.image.setY(tiles[whereX][whereY].Y*scaleHeight);
+        tiles[posX][posY].figure.posX = whereX;
+        tiles[posX][posY].figure.posY = whereY;
+        tiles[whereX][whereY].figure = tiles[posX][posY].figure;
+        tiles[posX][posY].figure = null;
+        changeTurn();
+    };
 
     public void deleteFigure(int x, int y) {
         tiles[x][y].figure.image.setVisibility(View.GONE);
         tiles[x][y].figure = null;
     }; //
 
-    public void addFigure(int posX, int posY, int figureCode) {
+    public void addFigure(int posX, int posY, int figureCode, boolean isWhite, boolean canMove) {
         if(tiles[posX][posY].figure != null) { return; }
+        ImageView imageView = new ImageView(fragInstance.getContext());
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                tileWidth,
+                tileHeight
+        );
 
         switch (figureCode) {
             case Constants.PAWN:
-                ImageView imageView = new ImageView(fragInstance.getContext());
-                imageView.setImageResource(R.drawable.w_pawn);
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        tileWidth,
-                        tileHeight
-                );
+                if(isWhite){imageView.setImageResource(R.drawable.w_pawn);}
+                else{imageView.setImageResource(R.drawable.b_pawn);}
                 fragInstance.layout.addView(imageView, layoutParams);
-                imageView.setX(tiles[posX][posY].X*board.getMeasuredWidth()/1024);
-                imageView.setY(tiles[posX][posY].Y*board.getMeasuredHeight()/1024);
-                tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, true);
+                tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, isWhite, canMove);
                 break;
             default:
                 break;
         }
 
+        imageView.setX(tiles[posX][posY].X*scaleWidth);
+        imageView.setY(tiles[posX][posY].Y*scaleHeight);
     }; // Добавляет выбранную фигуру на выбранный номер тайла.
+
+    public void changeTurn() {
+        whiteTurn = !whiteTurn;
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                if(tiles[i][j].figure != null) {
+                    tiles[i][j].figure.canMove = !tiles[i][j].figure.canMove;
+                }
+            }
+        }
+    }
 
     public void checkFinder(Tile attacker, Tile king) {}
 
@@ -133,13 +156,14 @@ public class Board {
 
     public void gameEnd() {}; // конец игры
 
-    public int[] findNearestTile(int X, int Y, Tile[] Tiles) {
-        int distance[] = new int[Tiles.length];
-        for (int i = 0; i < Tiles.length; i++) {
-            distance[i] = distanceTwoPoints(X, Y, Tiles[i].X, Tiles[i].Y);
+    public int[] findNearestTile(int X, int Y, int[][] tilePos) {
+        int distance[] = new int[tilePos.length];
+        for (int i = 0; i < tilePos.length; i++) {
+            distance[i] = distanceTwoPoints(X, Y,
+                    tiles[tilePos[i][0]][tilePos[i][1]].X, tiles[tilePos[i][0]][tilePos[i][1]].Y);
         }
         int maxDist = getMinIndex(distance);
-        return new int[]{ Tiles[maxDist].X, Tiles[maxDist].Y, distance[maxDist]};
+        return new int[]{ tilePos[maxDist][0], tilePos[maxDist][1], distance[maxDist]};
     }; // находит ближайшие координаты тайла используя заданные номера тайлов и координаты. Возвращает номер тайла и расстояние до него.
 
     private int distanceTwoPoints(int X1, int Y1, int X2, int Y2) {
@@ -164,7 +188,7 @@ public class Board {
         if(posX<0) return false;
         if(posY<0) return false;
         return true;
-    }
+    } // Проверяет выходят ли заданные координаты за рамки поля.
 
     // Struct
     public static class Tile {

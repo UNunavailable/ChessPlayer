@@ -35,10 +35,8 @@ public class BoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_board, container, false);
-        boardInstance = new Board(this);
-        boardInstance.board = (ImageView) rootView.findViewById(R.id.image_board);
+        boardInstance = new Board(this, rootView.findViewById(R.id.image_board));
         notation = (TextView) rootView.findViewById(R.id.text_notation);
-
         return rootView;
     }
 
@@ -59,15 +57,8 @@ public class BoardFragment extends Fragment {
             public void onClick(View v)
             {
                 notation.setText(null);
-                boardInstance.addFigure(0,6,Constants.PAWN);
-                boardInstance.addFigure(1,6,Constants.PAWN);
-                boardInstance.addFigure(2,6,Constants.PAWN);
-                boardInstance.addFigure(3,6,Constants.PAWN);
-                boardInstance.addFigure(4,6,Constants.PAWN);
-                boardInstance.addFigure(5,6,Constants.PAWN);
-                boardInstance.addFigure(6,6,Constants.PAWN);
-                boardInstance.addFigure(6,6,Constants.PAWN);
-                boardInstance.addFigure(7,6,Constants.PAWN);
+                boardInstance.addFigure(0,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(1,1,Constants.PAWN, false, false);
                 // TODO Удалить проверку координат
                 boolean checkCoords = false;
                 if (checkCoords) {
