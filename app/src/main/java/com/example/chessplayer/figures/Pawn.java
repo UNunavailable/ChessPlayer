@@ -16,12 +16,12 @@ public class Pawn extends aFigure {
 
     protected Board.Tile[] chooseTiles() {
         ArrayList<Board.Tile> tiles = new ArrayList<Board.Tile>();
-        int[] X = new int[]{posX, posX - 1, posX + 1, posX + 1};
+        int[] X = new int[]{posX, posX - 1, posX + 1, posX};
         int[] Y = new int[]{
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 2*(isWhite?1:0) + 1,
-                posY - 3*(isWhite?1:0) + 2};
+                posY - 4*(isWhite?1:0) + 2};
         for (int i = 0; i < X.length; i++) {
             if(i<X.length-1) {
                 if(boardInstance.checkOutOfBounds(X[i], Y[i])) {

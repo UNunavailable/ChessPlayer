@@ -32,31 +32,34 @@ public abstract class aFigure {
             public boolean onTouch(View view, MotionEvent event) {
                 int[] location = new int[2];
                 boardInstance.board.getLocationOnScreen(location);
+                float mousePosX = event.getRawX()-location[0]-image.getMeasuredWidth()/2;
+                float mousePosY = event.getRawY()-location[1]-image.getMeasuredHeight()/2;
+
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
-                        image.setX(event.getRawX()-location[0]-image.getMeasuredWidth()/2);
-                        image.setY(event.getRawY()-location[1]-image.getMeasuredHeight()/2);
+                        image.setX(mousePosX);
+                        image.setY(mousePosY);
                         lightUp(chooseTiles());
                         break;
                     case MotionEvent.ACTION_UP:
                         Board.Tile[] moveTiles = chooseTiles();
                         delightUp(moveTiles);
                         int move[] = boardInstance.findNearestTile(
-                                (int)(event.getRawX()-location[0]-image.getMeasuredWidth()/2),
-                                (int)(event.getRawY()-location[1]-image.getMeasuredHeight()/2),
+                                (int)(mousePosX),
+                                (int)(mousePosY),
                                 moveTiles);
-                        if (move[2] < 800) {
-                            image.setX(move[0]*boardInstance.board.getMeasuredWidth()/1024);
-                            image.setY(move[1]*boardInstance.board.getMeasuredHeight()/1024);
+                        if (move[2] < 200) {
+                            image.setX(move[0]*boardInstance.scaleWidth);
+                            image.setY(move[1]*boardInstance.scaleHeight);
                         } else {
-                            image.setX(0);
-                            image.setY(0);
+                            image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+                            image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
                         }
                         move();
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        image.setX(event.getRawX()-location[0]-image.getMeasuredWidth()/2);
-                        image.setY(event.getRawY()-location[1]-image.getMeasuredHeight()/2);
+                        image.setX(mousePosX);
+                        image.setY(mousePosY);
                         break;
                 }
                 return true;

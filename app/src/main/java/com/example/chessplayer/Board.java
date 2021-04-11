@@ -22,6 +22,8 @@ public class Board {
     public Tile[][] tiles = new Tile[8][8]; // массив фигур
     public int tileWidth;
     public int tileHeight;
+    public float scaleWidth;
+    public float scaleHeight;
 
     // Method
     public Board(BoardFragment fragInstance) {
@@ -86,6 +88,8 @@ public class Board {
 
         tileWidth = tiles[1][1].X - tiles[0][0].X;
         tileHeight = tiles[1][1].Y - tiles[0][0].Y;
+        scaleWidth = board.getMeasuredWidth()/(float)bitmap.getWidth();
+        scaleHeight = board.getMeasuredHeight()/(float)bitmap.getHeight();
     }; // Используется при запуске программы. Вызывается после того как прогрузятся все View.
 
     public void lightUpTile(Tile tile) {}; // подсветка тайла
@@ -139,8 +143,7 @@ public class Board {
     }; // находит ближайшие координаты тайла используя заданные номера тайлов и координаты. Возвращает номер тайла и расстояние до него.
 
     private int distanceTwoPoints(int X1, int Y1, int X2, int Y2) {
-        int temp = (int)Math.sqrt((X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1));
-        return temp;
+        return (int)Math.sqrt((X2-X1)*(X2-X1) + (Y2-Y1)*(Y2-Y1));
     }
 
     private int getMinIndex(int[] inputArray){
