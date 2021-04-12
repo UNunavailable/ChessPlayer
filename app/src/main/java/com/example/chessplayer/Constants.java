@@ -7,7 +7,8 @@ public class Constants {
     public static final int ROOK = 4;
     public static final int QUEEN = 5;
     public static final int KING = 6;
-    public static final int EMPTY = 0;
-    public static final int FIGURE = 1;
-    public static final int OUTOFBOARD = 2;
+    public static final int OUTOFBOARD = 0;
+    public static final int EMPTY = 1;
+    public static final int WHITEFIGURE = 2;
+    public static final int BLACKFIGURE = 3;
 }

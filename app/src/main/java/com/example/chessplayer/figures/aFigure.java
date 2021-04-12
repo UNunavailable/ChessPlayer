@@ -49,7 +49,11 @@ public abstract class aFigure {
                                 (int)(mousePosX),
                                 (int)(mousePosY),
                                 moveTiles);
-                        if (move[2] < (boardInstance.tileHeight+boardInstance.tileWidth)/2) {
+                        if(move == null) {
+                            image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+                            image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+                        }
+                        if (move[2] < (boardInstance.tileHeight+boardInstance.tileWidth)/4) {
                             boardInstance.makeTurn(posX, posY, move[0], move[1]);
                         } else {
                             image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
@@ -71,5 +75,14 @@ public abstract class aFigure {
 
     protected void delightUp(int[][] temp) {
     };
+
+    public void move(int posX, int posY) {
+        image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+        image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+        boardInstance.tiles[posX][posY].figure = boardInstance.tiles[this.posX][this.posY].figure;
+        boardInstance.tiles[this.posX][this.posY].figure = null;
+        this.posX = posX;
+        this.posY = posY;
+    }
 
 }

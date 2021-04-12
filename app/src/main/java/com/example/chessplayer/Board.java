@@ -4,13 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 
 import com.example.chessplayer.figures.Pawn;
 import com.example.chessplayer.figures.aFigure;
@@ -99,15 +94,16 @@ public class Board {
 
     public void delightUpTile(Tile tile) {}; // отсветка тайла
 
-    public int canMove(Tile tile) {return 0;}; // проверка на возможность хода фигуры
+    public int checkTile(int posX, int posY) {
+        if(!ifInBounds(posX, posY)) return Constants.OUTOFBOARD;
+        if(tiles[posX][posY].figure == null) return Constants.EMPTY;
+        if(tiles[posX][posY].figure.isWhite) return Constants.WHITEFIGURE;
+        if(!tiles[posX][posY].figure.isWhite) return Constants.BLACKFIGURE;
+        return -1;
+    }; // проверка на возможность хода фигуры
 
     public void makeTurn(int posX, int posY, int whereX, int whereY) {
-        tiles[posX][posY].figure.image.setX(tiles[whereX][whereY].X*scaleWidth);
-        tiles[posX][posY].figure.image.setY(tiles[whereX][whereY].Y*scaleHeight);
-        tiles[posX][posY].figure.posX = whereX;
-        tiles[posX][posY].figure.posY = whereY;
-        tiles[whereX][whereY].figure = tiles[posX][posY].figure;
-        tiles[posX][posY].figure = null;
+        tiles[posX][posY].figure.move(whereX, whereY);
         changeTurn();
     };
 
@@ -157,6 +153,7 @@ public class Board {
     public void gameEnd() {}; // конец игры
 
     public int[] findNearestTile(int X, int Y, int[][] tilePos) {
+        if(tilePos.length == 0) return null;
         int distance[] = new int[tilePos.length];
         for (int i = 0; i < tilePos.length; i++) {
             distance[i] = distanceTwoPoints(X, Y,
@@ -182,13 +179,13 @@ public class Board {
         return index;
     }
 
-    public boolean checkOutOfBounds(int posX, int posY) {
+    public boolean ifInBounds(int posX, int posY) {
         if(posX>7) return false;
         if(posY>7) return false;
         if(posX<0) return false;
         if(posY<0) return false;
         return true;
-    } // Проверяет выходят ли заданные координаты за рамки поля.
+    } // Проверяет выходят ли заданные координаты за рамки поля. Возвращяет true если координаты находятся в рамках поля.
 
     // Struct
     public static class Tile {

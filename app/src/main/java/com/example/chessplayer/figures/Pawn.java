@@ -22,13 +22,20 @@ public class Pawn extends aFigure {
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 4*(isWhite?1:0) + 2};
-        for (int i = 0; i < X.length; i++) {
-            if(i<X.length-1) {
-                if(boardInstance.checkOutOfBounds(X[i], Y[i])) {
+        for (int i = 0; i < 4; i++) {
+            if(i == 0) {
+                if(boardInstance.checkTile(X[i], Y[i]) == Constants.EMPTY) {
+                    tiles.add(new int[]{X[i], Y[i]});
+                }
+            }
+            if(i > 0 && i < 3) {
+                if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite) {
+                    tiles.add(new int[]{X[i], Y[i]});
+                } else if(boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite) {
                     tiles.add(new int[]{X[i], Y[i]});
                 }
             } else {
-                if(boardInstance.checkOutOfBounds(X[i], Y[i]) && !haveMoved) {
+                if(boardInstance.ifInBounds(X[i], Y[i]) && !haveMoved) {
                     tiles.add(new int[]{X[i], Y[i]});
                 }
             }
