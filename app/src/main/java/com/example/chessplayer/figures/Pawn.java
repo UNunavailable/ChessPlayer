@@ -26,13 +26,16 @@ public class Pawn extends aFigure {
             if(i == 0) {
                 if(boardInstance.checkTile(X[i], Y[i]) == Constants.EMPTY) {
                     tiles.add(new int[]{X[i], Y[i]});
+                    continue;
                 }
             }
             if(i > 0 && i < 3) {
                 if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite) {
                     tiles.add(new int[]{X[i], Y[i]});
+                    continue;
                 } else if(boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite) {
                     tiles.add(new int[]{X[i], Y[i]});
+                    continue;
                 }
             } else {
                 if(boardInstance.ifInBounds(X[i], Y[i]) && !haveMoved) {
@@ -45,5 +48,10 @@ public class Pawn extends aFigure {
         return result;
     }
 
-    protected void move() {};
+    public void move(int posX, int posY) {
+        super.move(posX, posY);
+        haveMoved = true;
+    }
 }
+
+

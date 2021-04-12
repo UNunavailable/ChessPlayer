@@ -91,26 +91,21 @@ public class Board {
         scaleHeight = board.getMeasuredHeight()/(float)bitmap.getHeight();
     }; // Используется при запуске программы. Вызывается после того как прогрузятся все View.
 
-    public void lightUpTile(int posX, int posY) { // подсветка тайла
-        if(tiles[posX][posY].figure != null) { return; }
-
+    public void lightUpTile(int posX, int posY) {
         ImageView round = new ImageView(fragInstance.getContext());
         round.setImageResource(R.drawable.round);
-        image_rounds[posX][posY]=round;
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(tileWidth, tileHeight);
         fragInstance.layout.addView(round, layoutParams);
+        image_rounds[posX][posY]=round;
+        round.setX(tiles[posX][posY].X*scaleWidth);
+        round.setY(tiles[posX][posY].Y*scaleHeight);
+    } // подсветка тайла
 
-        round.setX(tiles[posX][posY].X*board.getMeasuredWidth()/1024);
-        round.setY(tiles[posX][posY].Y*board.getMeasuredHeight()/1024);
-    }
-
-    public void delightUpTile(int posX, int posY) { // отсветка тайла
-
-        if(tiles[posX][posY].figure != null) { return; }
+    public void delightUpTile(int posX, int posY) {
         if(image_rounds[posX][posY] == null) { return; }
         image_rounds[posX][posY].setVisibility(View.GONE);
-    }
+    } // отсветка тайла
 
     public int checkTile(int posX, int posY) {
         if(!ifInBounds(posX, posY)) return Constants.OUTOFBOARD;
@@ -121,6 +116,7 @@ public class Board {
     }; // проверка на возможность хода фигуры
 
     public void makeTurn(int posX, int posY, int whereX, int whereY) {
+        if(tiles[whereX][whereY].figure != null) deleteFigure(whereX, whereY);
         tiles[posX][posY].figure.move(whereX, whereY);
         changeTurn();
     };

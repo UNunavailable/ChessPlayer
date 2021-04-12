@@ -33,6 +33,7 @@ public abstract class aFigure {
             public boolean onTouch(View view, MotionEvent event) {
                 if(!canMove){return true;}
                 int[] location = new int[2];
+                int[][] moveTiles;
                 boardInstance.board.getLocationOnScreen(location);
                 float mousePosX = event.getRawX()-location[0]-image.getMeasuredWidth()/2;
                 float mousePosY = event.getRawY()-location[1]-image.getMeasuredHeight()/2;
@@ -40,19 +41,30 @@ public abstract class aFigure {
                     case MotionEvent.ACTION_DOWN:
                         image.setX(mousePosX);
                         image.setY(mousePosY);
-                        lightUp(chooseTiles());
+                        moveTiles = chooseTiles();
+                        if(moveTiles.length == 0) {
+                            image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+                            image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+                            return true;
+                        }
+                        for (int i = 0; i < moveTiles.length; i++) {
+                            boardInstance.lightUpTile(moveTiles[i][0], moveTiles[i][1]);
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
-                        int[][] moveTiles = chooseTiles();
-                        delightUp(moveTiles);
+                        moveTiles = chooseTiles();
+                        if(moveTiles.length == 0) {
+                            image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+                            image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+                            return true;
+                        }
+                        for (int i = 0; i < moveTiles.length; i++) {
+                            boardInstance.delightUpTile(moveTiles[i][0], moveTiles[i][1]);
+                        }
                         int move[] = boardInstance.findNearestTile(
                                 (int)(mousePosX),
                                 (int)(mousePosY),
                                 moveTiles);
-                        if(move == null) {
-                            image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
-                            image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
-                        }
                         if (move[2] < (boardInstance.tileHeight+boardInstance.tileWidth)/4) {
                             boardInstance.makeTurn(posX, posY, move[0], move[1]);
                         } else {
