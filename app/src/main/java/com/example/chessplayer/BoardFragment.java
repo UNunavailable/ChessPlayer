@@ -56,9 +56,14 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                notation.setText(null);
                 boardInstance.addFigure(0,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(1,1,Constants.PAWN, false, false);
+
+                boardInstance.lightUpTile(0,5);
+                boardInstance.lightUpTile(0,4);
+                boardInstance.lightUpTile(0,3);
+                boardInstance.delightUpTile(0,3);
+
                 // TODO Удалить проверку координат
                 boolean checkCoords = false;
                 if (checkCoords) {
@@ -94,6 +99,8 @@ public class BoardFragment extends Fragment {
                     }
                     boardInstance.board.setImageBitmap(newBitmap);
                 }
+
+
             }
         });
         super.onViewCreated(view, savedInstanceState);

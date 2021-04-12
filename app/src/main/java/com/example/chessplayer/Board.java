@@ -20,6 +20,7 @@ public class Board {
     public BoardFragment fragInstance;
     public ImageView board;
     public Tile[][] tiles = new Tile[8][8]; // массив фигур
+    public ImageView[][] image_rounds = new ImageView[8][8];
     public int tileWidth;
     public int tileHeight;
     public float scaleWidth;
@@ -95,9 +96,26 @@ public class Board {
         scaleHeight = board.getMeasuredHeight()/(float)bitmap.getHeight();
     }; // Используется при запуске программы. Вызывается после того как прогрузятся все View.
 
-    public void lightUpTile(Tile tile) {}; // подсветка тайла
+    public void lightUpTile(int posX, int posY) { // подсветка тайла
+        if(tiles[posX][posY].figure != null) { return; }
 
-    public void delightUpTile(Tile tile) {}; // отсветка тайла
+        ImageView round = new ImageView(fragInstance.getContext());
+        round.setImageResource(R.drawable.round);
+        image_rounds[posX][posY]=round;
+
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(tileWidth, tileHeight);
+        fragInstance.layout.addView(round, layoutParams);
+
+        round.setX(tiles[posX][posY].X*board.getMeasuredWidth()/1024);
+        round.setY(tiles[posX][posY].Y*board.getMeasuredHeight()/1024);
+    }
+
+    public void delightUpTile(int posX, int posY) { // отсветка тайла
+
+        if(tiles[posX][posY].figure != null) { return; }
+        if(image_rounds[posX][posY] == null) { return; }
+        image_rounds[posX][posY].setVisibility(View.GONE);
+    }
 
     public int canMove(Tile tile) {return 0;}; // проверка на возможность хода фигуры
 
