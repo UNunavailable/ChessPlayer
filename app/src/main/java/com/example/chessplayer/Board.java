@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.chessplayer.figures.Bishop;
 import com.example.chessplayer.figures.Knight;
 import com.example.chessplayer.figures.Pawn;
 import com.example.chessplayer.figures.Rook;
@@ -164,6 +165,16 @@ public class Board {
 
                 fragInstance.layout.addView(imageView, layoutParams);
                 tiles[posX][posY].figure = new Knight(this, imageView, posX, posY, isWhite, canMove);
+                break;
+            }
+
+            case Constants.BISHOP:
+            {
+                if (isWhite) { imageView.setImageResource(R.drawable.w_bishop); }
+                else { imageView.setImageResource(R.drawable.b_bishop); }
+
+                fragInstance.layout.addView(imageView, layoutParams);
+                tiles[posX][posY].figure = new Bishop(this, imageView, posX, posY, isWhite, canMove);
                 break;
             }
 
