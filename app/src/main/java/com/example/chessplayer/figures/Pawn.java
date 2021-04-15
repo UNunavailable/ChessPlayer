@@ -1,10 +1,8 @@
 package com.example.chessplayer.figures;
 
 import android.widget.ImageView;
-
 import com.example.chessplayer.Board;
 import com.example.chessplayer.Constants;
-
 import java.util.ArrayList;
 
 public class Pawn extends aFigure {
@@ -23,22 +21,31 @@ public class Pawn extends aFigure {
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 4*(isWhite?1:0) + 2};
         for (int i = 0; i < 4; i++) {
+
             if(i == 0) {
-                if(boardInstance.checkTile(X[i], Y[i]) == Constants.EMPTY) {
+                if(boardInstance.checkTile(X[i], Y[i]) == Constants.EMPTY)
+                {
                     tiles.add(new int[]{X[i], Y[i]});
                     continue;
                 }
             }
+
             if(i > 0 && i < 3) {
-                if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite) {
-                    tiles.add(new int[]{X[i], Y[i]});
-                    continue;
-                } else if(boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite) {
+                if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite)
+                {
                     tiles.add(new int[]{X[i], Y[i]});
                     continue;
                 }
-            } else {
-                if(boardInstance.ifInBounds(X[i], Y[i]) && !haveMoved) {
+                else if(boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite)
+                {
+                    tiles.add(new int[]{X[i], Y[i]});
+                    continue;
+                }
+            }
+
+            else {
+                if(boardInstance.ifInBounds(X[i], Y[i]) && !haveMoved)
+                {
                     tiles.add(new int[]{X[i], Y[i]});
                 }
             }

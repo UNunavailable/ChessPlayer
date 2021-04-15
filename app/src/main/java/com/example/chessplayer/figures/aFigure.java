@@ -1,5 +1,6 @@
 package com.example.chessplayer.figures;
 
+import android.graphics.drawable.TransitionDrawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,9 @@ public abstract class aFigure {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+
+
+
                 if(!canMove){return true;}
                 int[] location = new int[2];
                 int[][] moveTiles;

@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.chessplayer.figures.Knight;
 import com.example.chessplayer.figures.Pawn;
+import com.example.chessplayer.figures.Rook;
 import com.example.chessplayer.figures.aFigure;
 
 public class Board {
@@ -136,13 +138,37 @@ public class Board {
 
         switch (figureCode) {
             case Constants.PAWN:
-                if(isWhite){imageView.setImageResource(R.drawable.w_pawn);}
-                else{imageView.setImageResource(R.drawable.b_pawn);}
+                {
+                    if (isWhite) { imageView.setImageResource(R.drawable.w_pawn); }
+                    else { imageView.setImageResource(R.drawable.b_pawn); }
+
+                    fragInstance.layout.addView(imageView, layoutParams);
+                    tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, isWhite, canMove);
+                    break;
+                }
+
+            case Constants.ROOK:
+                {
+                    if (isWhite) { imageView.setImageResource(R.drawable.w_rook); }
+                    else { imageView.setImageResource(R.drawable.b_rook); }
+
+                    fragInstance.layout.addView(imageView, layoutParams);
+                    tiles[posX][posY].figure = new Rook(this, imageView, posX, posY, isWhite, canMove);
+                    break;
+                }
+
+            case Constants.KNIGHT:
+            {
+                if (isWhite) { imageView.setImageResource(R.drawable.w_knight); }
+                else { imageView.setImageResource(R.drawable.b_knight); }
+
                 fragInstance.layout.addView(imageView, layoutParams);
-                tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, isWhite, canMove);
+                tiles[posX][posY].figure = new Knight(this, imageView, posX, posY, isWhite, canMove);
                 break;
-            default:
-                break;
+            }
+
+                default:
+                    { break;}
         }
 
         imageView.setX(tiles[posX][posY].X*scaleWidth);

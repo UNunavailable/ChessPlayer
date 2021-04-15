@@ -61,6 +61,13 @@ public class BoardFragment extends Fragment {
                 boardInstance.addFigure(5,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(6,1,Constants.PAWN, false, false);
 
+                boardInstance.addFigure(0,7,Constants.ROOK, true, true);
+                boardInstance.addFigure(0,0,Constants.ROOK, false, false);
+
+                boardInstance.addFigure(1,7,Constants.KNIGHT, true, true);
+                boardInstance.addFigure(1,0,Constants.KNIGHT, false, false);
+
+
                 // TODO Удалить проверку координат
                 boolean checkCoords = false;
                 if (checkCoords) {
