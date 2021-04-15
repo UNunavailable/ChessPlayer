@@ -41,8 +41,7 @@ public abstract class aFigure {
                     case MotionEvent.ACTION_DOWN:
                         image.setX(mousePosX);
                         image.setY(mousePosY);
-                        int[][] tempMoveTiles = chooseTiles();
-                        moveTiles = boardInstance.checkMove(posX, posY, tempMoveTiles, isWhite);
+                        moveTiles = boardInstance.checkMove(posX, posY, chooseTiles(), isWhite);
                         if(moveTiles.length == 0) {
                             image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
                             image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
