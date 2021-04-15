@@ -5,14 +5,13 @@ import com.example.chessplayer.Board;
 import com.example.chessplayer.Constants;
 import java.util.ArrayList;
 
-public class Rook extends aFigure {
+public class Queen extends aFigure {
     private boolean haveMoved = false;
 
-    public Rook(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
+    public Queen(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
         super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
-    //TODO Дбоавить проверку = (сходила ли лальдя) для рокировки
     protected int[][] chooseTiles() {
         ArrayList<int[]> tiles = new ArrayList<int[]>();
 
@@ -65,6 +64,54 @@ public class Rook extends aFigure {
                     tiles.add(new int[]{posX + i, posY});
                 }
             }
+            for(int i=1;i<8;i++){
+                if (boardInstance.checkTile(posX + i, posY - i) != Constants.OUTOFBOARD) {
+                    if(boardInstance.checkTile(posX + i, posY - i) != Constants.EMPTY){
+                        if(boardInstance.checkTile(posX + i, posY - i) == Constants.BLACKFIGURE){
+                            tiles.add(new int[]{posX + i, posY - i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX+i, posY - i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX - i, posY + i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX - i, posY + i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX - i, posY + i) == Constants.BLACKFIGURE) {
+                            tiles.add(new int[]{posX - i, posY + i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX - i, posY + i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX - i, posY - i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX - i, posY - i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX - i, posY - i) == Constants.BLACKFIGURE) {
+                            tiles.add(new int[]{posX - i, posY - i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX - i, posY - i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX + i, posY + i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX + i, posY + i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX + i, posY + i) == Constants.BLACKFIGURE) {
+                            tiles.add(new int[]{posX + i, posY + i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX + i, posY + i});
+                }
+            }
         }
         else{
             for(int i=1;i<8;i++){
@@ -113,6 +160,54 @@ public class Rook extends aFigure {
                         break;
                     }
                     tiles.add(new int[]{posX + i, posY});
+                }
+            }
+            for(int i=1;i<8;i++){
+                if (boardInstance.checkTile(posX + i, posY - i) != Constants.OUTOFBOARD) {
+                    if(boardInstance.checkTile(posX + i, posY - i) != Constants.EMPTY){
+                        if(boardInstance.checkTile(posX + i, posY - i) == Constants.WHITEFIGURE){
+                            tiles.add(new int[]{posX + i, posY - i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX+i, posY - i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX - i, posY + i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX - i, posY + i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX - i, posY + i) == Constants.WHITEFIGURE) {
+                            tiles.add(new int[]{posX - i, posY + i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX - i, posY + i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX - i, posY - i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX - i, posY - i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX - i, posY - i) == Constants.WHITEFIGURE) {
+                            tiles.add(new int[]{posX - i, posY - i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX - i, posY - i});
+                }
+            }
+            for(int i=1;i<8;i++) {
+                if (boardInstance.checkTile(posX + i, posY + i) != Constants.OUTOFBOARD) {
+                    if (boardInstance.checkTile(posX + i, posY + i) != Constants.EMPTY) {
+                        if (boardInstance.checkTile(posX + i, posY + i) == Constants.WHITEFIGURE) {
+                            tiles.add(new int[]{posX + i, posY + i});
+                            break;
+                        }
+                        break;
+                    }
+                    tiles.add(new int[]{posX + i, posY + i});
                 }
             }
         }

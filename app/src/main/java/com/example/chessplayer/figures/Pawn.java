@@ -12,6 +12,7 @@ public class Pawn extends aFigure {
         super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
+    //TODO Пешка не должна ходить вперед и рубить фигуру, при ее первом двойном ходе, если на пути стоит вражеская фигура
     protected int[][] chooseTiles() {
         ArrayList<int[]> tiles = new ArrayList<int[]>();
         int[] X = new int[]{posX, posX - 1, posX + 1, posX};

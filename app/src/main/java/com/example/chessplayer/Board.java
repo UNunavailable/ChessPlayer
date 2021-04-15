@@ -8,8 +8,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.example.chessplayer.figures.Bishop;
+import com.example.chessplayer.figures.King;
 import com.example.chessplayer.figures.Knight;
 import com.example.chessplayer.figures.Pawn;
+import com.example.chessplayer.figures.Queen;
 import com.example.chessplayer.figures.Rook;
 import com.example.chessplayer.figures.aFigure;
 
@@ -139,25 +141,24 @@ public class Board {
 
         switch (figureCode) {
             case Constants.PAWN:
-                {
+            {
                     if (isWhite) { imageView.setImageResource(R.drawable.w_pawn); }
                     else { imageView.setImageResource(R.drawable.b_pawn); }
 
                     fragInstance.layout.addView(imageView, layoutParams);
                     tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, isWhite, canMove);
                     break;
-                }
+             }
 
             case Constants.ROOK:
-                {
+            {
                     if (isWhite) { imageView.setImageResource(R.drawable.w_rook); }
                     else { imageView.setImageResource(R.drawable.b_rook); }
 
                     fragInstance.layout.addView(imageView, layoutParams);
                     tiles[posX][posY].figure = new Rook(this, imageView, posX, posY, isWhite, canMove);
                     break;
-                }
-
+            }
             case Constants.KNIGHT:
             {
                 if (isWhite) { imageView.setImageResource(R.drawable.w_knight); }
@@ -167,7 +168,6 @@ public class Board {
                 tiles[posX][posY].figure = new Knight(this, imageView, posX, posY, isWhite, canMove);
                 break;
             }
-
             case Constants.BISHOP:
             {
                 if (isWhite) { imageView.setImageResource(R.drawable.w_bishop); }
@@ -175,6 +175,25 @@ public class Board {
 
                 fragInstance.layout.addView(imageView, layoutParams);
                 tiles[posX][posY].figure = new Bishop(this, imageView, posX, posY, isWhite, canMove);
+                break;
+            }
+            case Constants.QUEEN:
+            {
+                if (isWhite) { imageView.setImageResource(R.drawable.w_queen); }
+                else { imageView.setImageResource(R.drawable.b_queen); }
+
+                fragInstance.layout.addView(imageView, layoutParams);
+                tiles[posX][posY].figure = new Queen(this, imageView, posX, posY, isWhite, canMove);
+                break;
+            }
+
+            case Constants.KING:
+            {
+                if (isWhite) { imageView.setImageResource(R.drawable.w_king); }
+                else { imageView.setImageResource(R.drawable.b_king); }
+
+                fragInstance.layout.addView(imageView, layoutParams);
+                tiles[posX][posY].figure = new King(this, imageView, posX, posY, isWhite, canMove);
                 break;
             }
 
