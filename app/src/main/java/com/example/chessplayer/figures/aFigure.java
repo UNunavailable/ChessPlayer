@@ -1,6 +1,5 @@
 package com.example.chessplayer.figures;
 
-import android.graphics.drawable.TransitionDrawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +14,7 @@ public abstract class aFigure {
     public boolean isWhite;
     public boolean canMove;
     public Board boardInstance;
+    int[][] moveTiles;
 
     protected abstract int[][] chooseTiles();
 
@@ -32,12 +32,8 @@ public abstract class aFigure {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-
-
-
                 if(!canMove){return true;}
                 int[] location = new int[2];
-                int[][] moveTiles;
                 boardInstance.board.getLocationOnScreen(location);
                 float mousePosX = event.getRawX()-location[0]-image.getMeasuredWidth()/2;
                 float mousePosY = event.getRawY()-location[1]-image.getMeasuredHeight()/2;
@@ -45,7 +41,8 @@ public abstract class aFigure {
                     case MotionEvent.ACTION_DOWN:
                         image.setX(mousePosX);
                         image.setY(mousePosY);
-                        moveTiles = chooseTiles();
+                        int[][] tempMoveTiles = chooseTiles();
+                        moveTiles = boardInstance.checkMove(posX, posY, tempMoveTiles, isWhite);
                         if(moveTiles.length == 0) {
                             image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
                             image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
@@ -56,7 +53,6 @@ public abstract class aFigure {
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        moveTiles = chooseTiles();
                         if(moveTiles.length == 0) {
                             image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
                             image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);

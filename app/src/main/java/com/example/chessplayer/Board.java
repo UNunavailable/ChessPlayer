@@ -15,6 +15,8 @@ import com.example.chessplayer.figures.Queen;
 import com.example.chessplayer.figures.Rook;
 import com.example.chessplayer.figures.aFigure;
 
+import java.util.ArrayList;
+
 public class Board {
     // Var
     public BoardFragment fragInstance;
@@ -26,6 +28,8 @@ public class Board {
     public float scaleWidth;
     public float scaleHeight;
     private boolean whiteTurn = true;
+    private int[] blackKingPos;
+    private int[] whiteKingPos;
 
     // Methods
     public Board(BoardFragment fragInstance, ImageView board) {
@@ -149,7 +153,6 @@ public class Board {
                     tiles[posX][posY].figure = new Pawn(this, imageView, posX, posY, isWhite, canMove);
                     break;
              }
-
             case Constants.ROOK:
             {
                     if (isWhite) { imageView.setImageResource(R.drawable.w_rook); }
@@ -189,16 +192,23 @@ public class Board {
 
             case Constants.KING:
             {
-                if (isWhite) { imageView.setImageResource(R.drawable.w_king); }
-                else { imageView.setImageResource(R.drawable.b_king); }
-
+                if (isWhite && whiteKingPos == null)
+                {
+                    imageView.setImageResource(R.drawable.w_king);
+                    whiteKingPos = new int[] {posX, posY};
+                }
+                else if (blackKingPos == null)
+                {
+                    imageView.setImageResource(R.drawable.b_king);
+                    blackKingPos = new int[] {posX, posY};
+                }
+                else return;
                 fragInstance.layout.addView(imageView, layoutParams);
                 tiles[posX][posY].figure = new King(this, imageView, posX, posY, isWhite, canMove);
                 break;
             }
-
-                default:
-                    { break;}
+            default:
+                { break;}
         }
 
         imageView.setX(tiles[posX][posY].X*scaleWidth);
@@ -216,7 +226,67 @@ public class Board {
         }
     }
 
-    public void checkFinder(Tile attacker, Tile king) {}
+    public int[][] checkMove(int posX, int posY, int[][] move, boolean isWhite) {
+        if(move.length == 0) return move;
+        ArrayList<int[]> canMove = new ArrayList<int[]>();
+
+        for (int i = 0; i < move.length; i++) {
+            aFigure temp = tiles[move[i][0]][move[i][1]].figure;
+            tiles[move[i][0]][move[i][1]].figure = tiles[posX][posY].figure;
+            tiles[posX][posY].figure = null;
+
+            if(!checkFinder(isWhite)) canMove.add(move[i]);
+
+            tiles[posX][posY].figure = tiles[move[i][0]][move[i][1]].figure;
+            tiles[move[i][0]][move[i][1]].figure = temp;
+        }
+
+        int[][] result = new int[canMove.size()][2];
+        result = canMove.toArray(result);
+        return result;
+    }
+
+    public boolean checkFinder(boolean isWhite) {
+        int[] kingPos;
+        if(isWhite) kingPos = whiteKingPos;
+        else kingPos = blackKingPos;
+
+        if(bishopCheck(kingPos, isWhite)) return true;
+        if(rookCheck(kingPos, isWhite)) return true;
+        return false;
+    }
+
+    private boolean bishopCheck(int[] kingPos, boolean isWhite) {
+        for (int s = 0; s < 4; s++) {
+            for (int i = 1; i < 8; i++) { // check for bishop
+                int x = kingPos[0] + i * (int)Math.pow((-1), s); int y = kingPos[1] + i * (int)Math.pow((-1), (s/2));
+                if (checkTile(x, y) == Constants.OUTOFBOARD) break;
+                if (tiles[x][y].figure != null) {
+                    if (tiles[x][y].figure.isWhite == !isWhite
+                            && (tiles[x][y].figure instanceof Bishop
+                            || tiles[x][y].figure instanceof Queen)) return true;
+                    else break;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean rookCheck(int[] kingPos, boolean isWhite) {
+        for (int s = 0; s < 4; s++) {
+            for (int i = 1; i < 8; i++) { // check for bishop
+                int x = kingPos[0] + i * (int)Math.pow((-1), s) * ((s==1||s==2)?1:0); int y = kingPos[1] + i * (int)Math.pow((-1), (s/2)) * ((s==0||s==3)?1:0);
+                if (checkTile(x, y) == Constants.OUTOFBOARD) break;
+                if (tiles[x][y].figure != null) {
+                    if (tiles[x][y].figure.isWhite == !isWhite
+                            && (tiles[x][y].figure instanceof Rook
+                            || tiles[x][y].figure instanceof Queen)) return true;
+                    else break;
+                }
+            }
+        }
+        return false;
+    }
 
     public void checkMateFinder(Tile attacker, Tile king) {}
 
