@@ -12,7 +12,6 @@ public class King extends aFigure {
         super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
-    //TODO Нельзя вставать на атакующую вражеской фигурой клетку
     //TODO Добоавить проверку = (сходил ли король) для рокировки
     protected int[][] chooseTiles() {
         ArrayList<int[]> tiles = new ArrayList<int[]>();
@@ -40,6 +39,30 @@ public class King extends aFigure {
 
         }
 
+        if(!haveMoved && !boardInstance.checkFinder(isWhite)) {
+            for (int i = 1; i < 5; i++) {
+                if(boardInstance.checkTile(posX + i, posY) != Constants.EMPTY) break;
+                if(boardInstance.checkMove(posX, posY, new int[][]{new int[]{posX + i, posY}}, isWhite).length == 0) break;
+                if(boardInstance.checkTile(posX + 1 + i, posY) == Constants.OUTOFBOARD) break;
+                if(boardInstance.tiles[posX + 1 + i][posY].figure instanceof Rook
+                    && boardInstance.tiles[posX + 1 + i][posY].figure.isWhite == isWhite
+                    && !((Rook)boardInstance.tiles[posX + 1 + i][posY].figure).haveMoved
+                    && i>1) {
+                    tiles.add(new int[]{posX + 2, posY});
+                }
+            }
+            for (int i = 1; i < 5; i++) {
+                if(boardInstance.checkTile(posX - i, posY) != Constants.EMPTY) break;
+                if(boardInstance.checkMove(posX, posY, new int[][]{new int[]{posX - i, posY}}, isWhite).length == 0) break;
+                if(boardInstance.checkTile(posX - 1 - i, posY) == Constants.OUTOFBOARD) break;
+                if(boardInstance.tiles[posX - 1 - i][posY].figure instanceof Rook
+                        && boardInstance.tiles[posX - 1 - i][posY].figure.isWhite == isWhite
+                        && !((Rook)boardInstance.tiles[posX - 1 - i][posY].figure).haveMoved) {
+                    tiles.add(new int[]{posX - 2, posY});
+                }
+            }
+        }
+
         int[][] result = new int[tiles.size()][2];
         result = tiles.toArray(result);
         return result;
@@ -52,8 +75,29 @@ public class King extends aFigure {
     }
 
     public void move(int posX, int posY) {
+        if(Math.abs(this.posX - posX) == 2) {
+            if(this.posX - posX > 0) {
+                boardInstance.tiles[findRook(true)][posY].figure.move(posX+1, posY);
+            } else {
+                boardInstance.tiles[findRook(false)][posY].figure.move(posX-1, posY);
+            }
+        }
         super.move(posX, posY);
         haveMoved = true;
+    }
+
+    private int findRook(boolean isLeft) {
+        if(isLeft) {
+            for (int i = 0; i < 5; i++) {
+                if(boardInstance.tiles[posX - i][posY].figure instanceof Rook) return posX - i;
+            }
+        }
+        if(!isLeft) {
+            for (int i = 0; i < 5; i++) {
+                if(boardInstance.tiles[posX + i][posY].figure instanceof Rook) return posX + i;
+            }
+        }
+        return -1;
     }
 }
 

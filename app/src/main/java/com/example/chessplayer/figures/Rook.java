@@ -6,13 +6,12 @@ import com.example.chessplayer.Constants;
 import java.util.ArrayList;
 
 public class Rook extends aFigure {
-    private boolean haveMoved = false;
+    public boolean haveMoved = false;
 
     public Rook(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
         super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
-    //TODO Дбоавить проверку = (сходила ли лальдя) для рокировки
     protected int[][] chooseTiles() {
         ArrayList<int[]> tiles = new ArrayList<int[]>();
 
