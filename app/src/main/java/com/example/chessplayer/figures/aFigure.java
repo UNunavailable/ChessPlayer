@@ -87,13 +87,19 @@ public abstract class aFigure {
     protected void delightUp(int[][] temp) {
     };
 
-    public void move(int posX, int posY) {
-        image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
-        image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+    public aFigure changePosition(int posX, int posY) {
+        aFigure temp = boardInstance.tiles[posX][posY].figure;
         boardInstance.tiles[posX][posY].figure = boardInstance.tiles[this.posX][this.posY].figure;
         boardInstance.tiles[this.posX][this.posY].figure = null;
         this.posX = posX;
         this.posY = posY;
+        return temp;
+    }
+
+    public void move(int posX, int posY) {
+        image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
+        image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
+        changePosition(posX, posY);
     }
 
 }

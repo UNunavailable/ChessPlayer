@@ -45,6 +45,12 @@ public class King extends aFigure {
         return result;
     }
 
+    public aFigure changePosition(int posX, int posY) {
+        if(isWhite) boardInstance.whiteKingPos = new int[]{posX, posY};
+        else boardInstance.blackKingPos = new int[]{posX, posY};
+        return super.changePosition(posX, posY);
+    }
+
     public void move(int posX, int posY) {
         super.move(posX, posY);
         haveMoved = true;

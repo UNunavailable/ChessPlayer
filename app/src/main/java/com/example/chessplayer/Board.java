@@ -28,8 +28,8 @@ public class Board {
     public float scaleWidth;
     public float scaleHeight;
     private boolean whiteTurn = true;
-    private int[] blackKingPos;
-    private int[] whiteKingPos;
+    public int[] blackKingPos;
+    public int[] whiteKingPos;
 
     // Methods
     public Board(BoardFragment fragInstance, ImageView board) {
@@ -231,13 +231,11 @@ public class Board {
         ArrayList<int[]> canMove = new ArrayList<int[]>();
 
         for (int i = 0; i < move.length; i++) {
-            aFigure temp = tiles[move[i][0]][move[i][1]].figure;
-            tiles[move[i][0]][move[i][1]].figure = tiles[posX][posY].figure;
-            tiles[posX][posY].figure = null;
+            aFigure temp = tiles[posX][posY].figure.changePosition(move[i][0], move[i][1]);
 
             if(!checkFinder(isWhite)) canMove.add(move[i]);
 
-            tiles[posX][posY].figure = tiles[move[i][0]][move[i][1]].figure;
+            tiles[move[i][0]][move[i][1]].figure.changePosition(posX, posY);
             tiles[move[i][0]][move[i][1]].figure = temp;
         }
 
@@ -253,12 +251,14 @@ public class Board {
 
         if(bishopCheck(kingPos, isWhite)) return true;
         if(rookCheck(kingPos, isWhite)) return true;
+        if(pawnCheck(kingPos, isWhite)) return true;
+        if(knightCheck(kingPos, isWhite)) return true;
         return false;
     }
 
     private boolean bishopCheck(int[] kingPos, boolean isWhite) {
         for (int s = 0; s < 4; s++) {
-            for (int i = 1; i < 8; i++) { // check for bishop
+            for (int i = 1; i < 8; i++) {
                 int x = kingPos[0] + i * (int)Math.pow((-1), s); int y = kingPos[1] + i * (int)Math.pow((-1), (s/2));
                 if (checkTile(x, y) == Constants.OUTOFBOARD) break;
                 if (tiles[x][y].figure != null) {
@@ -274,7 +274,7 @@ public class Board {
 
     private boolean rookCheck(int[] kingPos, boolean isWhite) {
         for (int s = 0; s < 4; s++) {
-            for (int i = 1; i < 8; i++) { // check for bishop
+            for (int i = 1; i < 8; i++) {
                 int x = kingPos[0] + i * (int)Math.pow((-1), s) * ((s==1||s==2)?1:0); int y = kingPos[1] + i * (int)Math.pow((-1), (s/2)) * ((s==0||s==3)?1:0);
                 if (checkTile(x, y) == Constants.OUTOFBOARD) break;
                 if (tiles[x][y].figure != null) {
@@ -283,6 +283,36 @@ public class Board {
                             || tiles[x][y].figure instanceof Queen)) return true;
                     else break;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean pawnCheck(int[] kingPos, boolean isWhite) {
+        if(isWhite) {
+            if(checkTile(kingPos[0] + 1, kingPos[1] - 1) == Constants.BLACKFIGURE
+                    && tiles[kingPos[0] + 1][kingPos[1] - 1].figure instanceof Pawn) return true;
+            if(checkTile(kingPos[0] - 1, kingPos[1] - 1) == Constants.BLACKFIGURE
+                    && tiles[kingPos[0] - 1][kingPos[1] - 1].figure instanceof Pawn) return true;
+        }
+        else {
+            if(checkTile(kingPos[0] + 1, kingPos[1] + 1) == Constants.WHITEFIGURE
+                    && tiles[kingPos[0] + 1][kingPos[1] + 1].figure instanceof Pawn) return true;
+            if(checkTile(kingPos[0] - 1, kingPos[1] + 1) == Constants.WHITEFIGURE
+                    && tiles[kingPos[0] - 1][kingPos[1] + 1].figure instanceof Pawn) return true;
+        }
+        return false;
+    }
+
+    private boolean knightCheck(int[] kingPos, boolean isWhite) {
+        int[] X = new int[]{kingPos[0]+1, kingPos[0]+1, kingPos[0]+2, kingPos[0]+2, kingPos[0]-1, kingPos[0]-1, kingPos[0]-2, kingPos[0]-2};
+        int[] Y = new int[]{kingPos[1]-2, kingPos[1]+2, kingPos[1]-1, kingPos[1]+1, kingPos[1]-2, kingPos[1]+2, kingPos[1]-1, kingPos[1]+1};
+
+        for (int i = 0; i < 8; i++) {
+            if(checkTile(X[i], Y[i]) != Constants.OUTOFBOARD)
+            {
+                if(tiles[X[i]][Y[i]].figure instanceof Knight
+                        && tiles[X[i]][Y[i]].figure.isWhite != isWhite) return true;
             }
         }
         return false;
