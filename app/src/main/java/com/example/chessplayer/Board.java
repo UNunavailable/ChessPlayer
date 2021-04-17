@@ -130,10 +130,10 @@ public class Board {
         changeTurn();
     };
 
-    public void deleteFigure(int x, int y) {
-        tiles[x][y].figure.image.setVisibility(View.GONE);
-        tiles[x][y].figure = null;
-    }; //
+    public void deleteFigure(int posX, int posY) {
+        tiles[posX][posY].figure.image.setVisibility(View.GONE);
+        tiles[posX][posY].figure = null;
+    };
 
     public void addFigure(int posX, int posY, int figureCode, boolean isWhite, boolean canMove) {
         if(tiles[posX][posY].figure != null) { return; }

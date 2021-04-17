@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Pawn extends aFigure {
     private boolean haveMoved = false;
+    public boolean enPassantLeft = false;
+    public boolean enPassantRight = false;
 
     public Pawn(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
         super(boardInstance, image, posX, posY, isWhite, canMove);
@@ -31,12 +33,12 @@ public class Pawn extends aFigure {
             }
 
             if(i > 0 && i < 3) {
-                if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite)
+                if((boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite) || enPassantLeft)
                 {
                     tiles.add(new int[]{X[i], Y[i]});
                     continue;
                 }
-                else if(boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite)
+                else if((boardInstance.checkTile(X[i], Y[i]) == Constants.WHITEFIGURE && !isWhite) || enPassantRight)
                 {
                     tiles.add(new int[]{X[i], Y[i]});
                     continue;
@@ -60,7 +62,26 @@ public class Pawn extends aFigure {
 
     public void move(int posX, int posY) {
         super.move(posX, posY);
+        if(enPassantRight || enPassantLeft) {
+            boardInstance.deleteFigure(posX, posY + (isWhite?2:0) - 1);
+        }
+        if(boardInstance.checkTile(posX-1, posY) == Constants.WHITEFIGURE
+                || boardInstance.checkTile(posX-1, posY) == Constants.BLACKFIGURE) {
+            if(boardInstance.tiles[posX-1][posY].figure.isWhite != isWhite
+                    && boardInstance.tiles[posX-1][posY].figure instanceof Pawn) {
+                ((Pawn)boardInstance.tiles[posX-1][posY].figure).enPassantRight = true;
+            }
+        }
+        if(boardInstance.checkTile(posX+1, posY) == Constants.WHITEFIGURE
+                || boardInstance.checkTile(posX+1, posY) == Constants.BLACKFIGURE) {
+            if(boardInstance.tiles[posX+1][posY].figure.isWhite != isWhite
+                    && boardInstance.tiles[posX+1][posY].figure instanceof Pawn) {
+                ((Pawn)boardInstance.tiles[posX+1][posY].figure).enPassantRight = true;
+            }
+        }
         haveMoved = true;
+        enPassantLeft = false;
+        enPassantRight = false;
     }
 }
 

@@ -12,7 +12,6 @@ public class King extends aFigure {
         super(boardInstance, image, posX, posY, isWhite, canMove);
     }
 
-    //TODO Добоавить проверку = (сходил ли король) для рокировки
     protected int[][] chooseTiles() {
         ArrayList<int[]> tiles = new ArrayList<int[]>();
 

@@ -57,63 +57,42 @@ public class BoardFragment extends Fragment {
             public void onClick(View v)
             {
                 boardInstance.addFigure(0,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(1,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(1,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(2,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(3,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(4,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(5,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(6,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(7,6,Constants.PAWN, true, true);
+                boardInstance.addFigure(0,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(1,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(2,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(3,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(4,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(5,1,Constants.PAWN, false, false);
                 boardInstance.addFigure(6,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(7,1,Constants.PAWN, false, false);
 
                 boardInstance.addFigure(0,7,Constants.ROOK, true, true);
+                boardInstance.addFigure(7,7,Constants.ROOK, true, true);
                 boardInstance.addFigure(0,0,Constants.ROOK, false, false);
+                boardInstance.addFigure(7,0,Constants.ROOK, false, false);
 
                 boardInstance.addFigure(1,7,Constants.KNIGHT, true, true);
+                boardInstance.addFigure(6,7,Constants.KNIGHT, true, true);
                 boardInstance.addFigure(1,0,Constants.KNIGHT, false, false);
+                boardInstance.addFigure(6,0,Constants.KNIGHT, false, false);
 
                 boardInstance.addFigure(2,7,Constants.BISHOP, true, true);
+                boardInstance.addFigure(5,7,Constants.BISHOP, true, true);
                 boardInstance.addFigure(2,0,Constants.BISHOP, false, false);
+                boardInstance.addFigure(5,0,Constants.BISHOP, false, false);
 
                 boardInstance.addFigure(3,7,Constants.QUEEN, true, true);
                 boardInstance.addFigure(3,0,Constants.QUEEN, false, false);
 
                 boardInstance.addFigure(4,7,Constants.KING, true, true);
                 boardInstance.addFigure(4,0,Constants.KING, false, false);
-
-
-                // TODO Удалить проверку координат
-                boolean checkCoords = false;
-                if (checkCoords) {
-                    Bitmap oldBitmap = ((BitmapDrawable) boardInstance.board.getDrawable()).getBitmap();
-                    // copying to newBitmap for manipulation
-                    Bitmap newBitmap = oldBitmap.copy(Bitmap.Config.ARGB_8888, true);
-                    // traversing each pixel in Image as an 2D Array
-
-                    for (int x = 0; x < boardInstance.tiles.length; x++) {
-                        for (int y = 0; y < boardInstance.tiles.length; y++) {
-                            for (int i = boardInstance.tiles[x][y].X + 10; i < boardInstance.tiles[x][y].X + boardInstance.tileWidth - 10; i++) {
-                                for (int j = boardInstance.tiles[x][y].Y + 10; j < boardInstance.tiles[x][y].Y + boardInstance.tileHeight - 10; j++) {
-                                    // getting each pixel
-                                    int oldPixel = oldBitmap.getPixel(i, j);
-
-                                    // each pixel is made from RED_BLUE_GREEN_ALPHA
-                                    // so, getting current values of pixel
-                                    int oldRed = Color.red(oldPixel);
-                                    int oldBlue = Color.blue(oldPixel);
-                                    int oldGreen = Color.green(oldPixel);
-                                    int oldAlpha = Color.alpha(oldPixel);
-
-                                    int newRed = (int) (oldRed / 2 + 80);
-                                    int newGreen = (int) (oldGreen / 2 + 80);
-                                    int newBlue = (int) (100);
-
-                                    // applying new pixel values from above to newBitmap
-                                    int newPixel = Color.argb(oldAlpha, newRed, newGreen, newBlue);
-                                    newBitmap.setPixel(i, j, newPixel);
-                                }
-                            }
-                        }
-                    }
-                    boardInstance.board.setImageBitmap(newBitmap);
-                }
-
-
             }
         });
         super.onViewCreated(view, savedInstanceState);
