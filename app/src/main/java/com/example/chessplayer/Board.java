@@ -98,6 +98,7 @@ public class Board {
         tileHeight = tiles[1][1].Y - tiles[0][0].Y;
         scaleWidth = board.getMeasuredWidth()/(float)bitmap.getWidth();
         scaleHeight = board.getMeasuredHeight()/(float)bitmap.getHeight();
+
     }; // Используется при запуске программы. Вызывается после того как прогрузятся все View.
 
     public void lightUpTile(int posX, int posY) {

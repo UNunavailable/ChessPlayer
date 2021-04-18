@@ -15,6 +15,7 @@ public abstract class aFigure {
     public boolean canMove;
     public Board boardInstance;
     int[][] moveTiles;
+    int passing_move=0;
 
     protected abstract int[][] chooseTiles();
 
@@ -100,6 +101,7 @@ public abstract class aFigure {
         image.setX(boardInstance.tiles[posX][posY].X*boardInstance.scaleWidth);
         image.setY(boardInstance.tiles[posX][posY].Y*boardInstance.scaleHeight);
         changePosition(posX, posY);
+
     }
 
 }

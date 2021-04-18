@@ -1,11 +1,19 @@
 package com.example.chessplayer.figures;
 
 import android.widget.ImageView;
-import com.example.chessplayer.Board;
-import com.example.chessplayer.Constants;
-import java.util.ArrayList;
 
-public class Pawn extends aFigure {
+import androidx.fragment.app.FragmentManager;
+
+import com.example.chessplayer.Board;
+import com.example.chessplayer.BoardFragment;
+import com.example.chessplayer.Constants;
+import com.example.chessplayer.Dialog;
+import com.example.chessplayer.MainActivity;
+
+import java.util.ArrayList;
+import java.util.zip.CheckedOutputStream;
+
+public class Pawn extends aFigure implements Dialog.ExampleDialogListener{
     private boolean haveMoved = false;
 
     public Pawn(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
@@ -20,6 +28,9 @@ public class Pawn extends aFigure {
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 4*(isWhite?1:0) + 2};
+
+
+
         for (int i = 0; i < 4; i++) {
 
             if(i == 0) {
@@ -29,10 +40,15 @@ public class Pawn extends aFigure {
                     continue;
                 }
             }
-
             if(i > 0 && i < 3) {
                 if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite)
                 {
+                    if(boardInstance.checkTile(X[i], Y[i]) == Constants.BLACKFIGURE && isWhite)
+                    {
+                        tiles.add(new int[]{X[i], Y[i]});
+                        continue;
+                    }
+
                     tiles.add(new int[]{X[i], Y[i]});
                     continue;
                 }
@@ -42,7 +58,6 @@ public class Pawn extends aFigure {
                     continue;
                 }
             }
-
             else {
                 if(boardInstance.ifInBounds(X[i], Y[i])
                         && boardInstance.checkTile(X[i], Y[i]) == Constants.EMPTY
@@ -53,6 +68,7 @@ public class Pawn extends aFigure {
                 }
             }
         }
+
         int[][] result = new int[tiles.size()][2];
         result = tiles.toArray(result);
         return result;
@@ -61,6 +77,34 @@ public class Pawn extends aFigure {
     public void move(int posX, int posY) {
         super.move(posX, posY);
         haveMoved = true;
+
+        for (int z = 0; z < 7; z++) {
+            if(posX==z && posY == 0) {
+                boardInstance.deleteFigure(posX,posY);
+                boardInstance.addFigure(posX,posY,Constants.QUEEN, true, true);
+            }
+            if(posX==z && posY == 7) {
+                boardInstance.deleteFigure(posX,posY);
+                boardInstance.addFigure(posX,posY,Constants.QUEEN, false, false);
+            }
+        }
+
+
+        for (int z = 0; z < 7; z++) {
+            if(posX==z && posY == 0) {
+                boardInstance.deleteFigure(posX,posY);
+                boardInstance.addFigure(posX,posY,Constants.QUEEN, true, true);
+            }
+            if(posX==z && posY == 7) {
+                boardInstance.deleteFigure(posX,posY);
+                boardInstance.addFigure(posX,posY,Constants.QUEEN, false, false);
+            }
+        }
+    }
+
+    @Override
+    public void applyDialog(String username, String password) {
+
     }
 }
 

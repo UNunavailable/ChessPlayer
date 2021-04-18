@@ -1,7 +1,9 @@
 package com.example.chessplayer;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,8 +13,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -24,9 +29,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.chessplayer.figures.Pawn;
 
 
-public class BoardFragment extends Fragment {
+public class BoardFragment extends AppCompatDialogFragment {
     FrameLayout layout;
     Board boardInstance;
     TextView notation;
@@ -60,6 +68,7 @@ public class BoardFragment extends Fragment {
                 boardInstance.addFigure(1,1,Constants.PAWN, false, false);
                 boardInstance.addFigure(5,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(6,1,Constants.PAWN, false, false);
+                boardInstance.addFigure(6,7,Constants.PAWN, false, false);
 
                 boardInstance.addFigure(0,7,Constants.ROOK, true, true);
                 boardInstance.addFigure(0,0,Constants.ROOK, false, false);
@@ -76,46 +85,36 @@ public class BoardFragment extends Fragment {
                 boardInstance.addFigure(4,7,Constants.KING, true, true);
                 boardInstance.addFigure(4,0,Constants.KING, false, false);
 
-
-                // TODO Удалить проверку координат
-                boolean checkCoords = false;
-                if (checkCoords) {
-                    Bitmap oldBitmap = ((BitmapDrawable) boardInstance.board.getDrawable()).getBitmap();
-                    // copying to newBitmap for manipulation
-                    Bitmap newBitmap = oldBitmap.copy(Bitmap.Config.ARGB_8888, true);
-                    // traversing each pixel in Image as an 2D Array
-
-                    for (int x = 0; x < boardInstance.tiles.length; x++) {
-                        for (int y = 0; y < boardInstance.tiles.length; y++) {
-                            for (int i = boardInstance.tiles[x][y].X + 10; i < boardInstance.tiles[x][y].X + boardInstance.tileWidth - 10; i++) {
-                                for (int j = boardInstance.tiles[x][y].Y + 10; j < boardInstance.tiles[x][y].Y + boardInstance.tileHeight - 10; j++) {
-                                    // getting each pixel
-                                    int oldPixel = oldBitmap.getPixel(i, j);
-
-                                    // each pixel is made from RED_BLUE_GREEN_ALPHA
-                                    // so, getting current values of pixel
-                                    int oldRed = Color.red(oldPixel);
-                                    int oldBlue = Color.blue(oldPixel);
-                                    int oldGreen = Color.green(oldPixel);
-                                    int oldAlpha = Color.alpha(oldPixel);
-
-                                    int newRed = (int) (oldRed / 2 + 80);
-                                    int newGreen = (int) (oldGreen / 2 + 80);
-                                    int newBlue = (int) (100);
-
-                                    // applying new pixel values from above to newBitmap
-                                    int newPixel = Color.argb(oldAlpha, newRed, newGreen, newBlue);
-                                    newBitmap.setPixel(i, j, newPixel);
-                                }
-                            }
-                        }
-                    }
-                    boardInstance.board.setImageBitmap(newBitmap);
-                }
+                startDialog();
 
 
             }
         });
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    public void startDialog(){
+        BoardFragment dialogFragment = new BoardFragment();
+        dialogFragment.show(getFragmentManager(), "dialog");
+
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        final String[] transform_names = {"Ферьзь", "Ладья", "Слон", "Конь"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Выберите фигуру для превращения")
+                .setItems(transform_names, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(getActivity(), transform_names[which], Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+        return builder.create();
     }
 }
