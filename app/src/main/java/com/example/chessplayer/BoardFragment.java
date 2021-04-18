@@ -1,35 +1,23 @@
 package com.example.chessplayer;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.location.LocationListener;
-import android.location.LocationManager;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-public class BoardFragment extends Fragment {
+public class BoardFragment extends DialogFragment {
     FrameLayout layout;
     Board boardInstance;
     TextView notation;
+    public static int find_figure;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +44,7 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
+
                 boardInstance.addFigure(0,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(1,6,Constants.PAWN, true, true);
                 boardInstance.addFigure(2,6,Constants.PAWN, true, true);
@@ -97,4 +86,33 @@ public class BoardFragment extends Fragment {
         });
         super.onViewCreated(view, savedInstanceState);
     }
+
+    public void startDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Выберите фигуру для превращения");
+        builder.setItems(new CharSequence[]
+                        {"Ферьзь", "Ладья", "Слон", "Конь"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        switch (which) {
+                            case 0:
+                                find_figure = 5;
+                                break;
+                            case 1:
+                                find_figure = 4;
+                                break;
+                            case 2:
+                                find_figure = 2;
+                                break;
+                            case 3:
+                                find_figure = 3;
+                                break;
+                        }
+                    }
+                });
+        builder.create().show();
+    }
+
 }

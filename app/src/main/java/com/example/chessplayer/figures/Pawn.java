@@ -1,9 +1,18 @@
 package com.example.chessplayer.figures;
 
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import com.example.chessplayer.Board;
+import com.example.chessplayer.BoardFragment;
 import com.example.chessplayer.Constants;
+
+import org.xml.sax.Parser;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Pawn extends aFigure {
     private boolean haveMoved = false;
@@ -22,6 +31,7 @@ public class Pawn extends aFigure {
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 2*(isWhite?1:0) + 1,
                 posY - 4*(isWhite?1:0) + 2};
+
         for (int i = 0; i < 4; i++) {
 
             if(i == 0) {
@@ -82,7 +92,28 @@ public class Pawn extends aFigure {
         haveMoved = true;
         enPassantLeft = false;
         enPassantRight = false;
+
+        for (int z = 0; z < 7; z++) {
+            if(posX==z && posY == 0) {
+                boardInstance.fragInstance.startDialog();
+                boardInstance.deleteFigure(posX,posY);
+
+                int i=BoardFragment.find_figure;
+
+                boardInstance.addFigure(posX,posY,i, true, true);
+            }
+            if(posX==z && posY == 7) {
+                boardInstance.fragInstance.startDialog();
+
+                int i=BoardFragment.find_figure;
+
+                boardInstance.deleteFigure(posX,posY);
+                boardInstance.addFigure(posX,posY, i, false, false);
+            }
+        }
+
     }
+
 }
 
 
