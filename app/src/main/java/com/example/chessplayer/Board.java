@@ -258,6 +258,7 @@ public class Board {
         if(rookCheck(kingPos, isWhite)) return true;
         if(pawnCheck(kingPos, isWhite)) return true;
         if(knightCheck(kingPos, isWhite)) return true;
+        if(kingCheck(kingPos, isWhite)) return true;
         return false;
     }
 
@@ -317,6 +318,19 @@ public class Board {
             if(checkTile(X[i], Y[i]) != Constants.OUTOFBOARD)
             {
                 if(tiles[X[i]][Y[i]].figure instanceof Knight
+                        && tiles[X[i]][Y[i]].figure.isWhite != isWhite) return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean kingCheck(int[] kingPos, boolean isWhite) {
+        int[] X = new int[]{kingPos[0]-1, kingPos[0], kingPos[0]+1, kingPos[0]+1, kingPos[0]+1, kingPos[0], kingPos[0]-1, kingPos[0]-1};
+        int[] Y = new int[]{kingPos[1]-1, kingPos[1]-1, kingPos[1]-1, kingPos[1], kingPos[1]+1, kingPos[1]+1, kingPos[1]+1, kingPos[1]};
+        for (int i = 0; i < 8; i++) {
+            if(checkTile(X[i], Y[i]) != Constants.OUTOFBOARD)
+            {
+                if(tiles[X[i]][Y[i]].figure instanceof King
                         && tiles[X[i]][Y[i]].figure.isWhite != isWhite) return true;
             }
         }
