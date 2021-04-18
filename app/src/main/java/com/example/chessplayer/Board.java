@@ -135,6 +135,11 @@ public class Board {
         tiles[posX][posY].figure = null;
     };
 
+    public void changeFigure(int posX, int posY, int figureId, boolean isWhite, boolean canMove) {
+        deleteFigure(posX,posY);
+        addFigure(posX, posY, figureId, isWhite, canMove);
+    }
+
     public void addFigure(int posX, int posY, int figureCode, boolean isWhite, boolean canMove) {
         if(tiles[posX][posY].figure != null) { return; }
         ImageView imageView = new ImageView(fragInstance.getContext());

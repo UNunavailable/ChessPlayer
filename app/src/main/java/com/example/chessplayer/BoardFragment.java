@@ -16,7 +16,6 @@ public class BoardFragment extends DialogFragment {
     FrameLayout layout;
     Board boardInstance;
     TextView notation;
-    public static int find_figure;
 
 
     @Override
@@ -87,7 +86,7 @@ public class BoardFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void startDialog(){
+    public void startDialog(int posX, int posY, boolean isWhite, boolean canMove){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Выберите фигуру для превращения");
         builder.setItems(new CharSequence[]
@@ -98,16 +97,16 @@ public class BoardFragment extends DialogFragment {
                         // of the selected item
                         switch (which) {
                             case 0:
-                                find_figure = 5;
+                                boardInstance.changeFigure(posX, posY, 5, isWhite, canMove);
                                 break;
                             case 1:
-                                find_figure = 4;
+                                boardInstance.changeFigure(posX, posY, 4, isWhite, canMove);
                                 break;
                             case 2:
-                                find_figure = 2;
+                                boardInstance.changeFigure(posX, posY, 2, isWhite, canMove);
                                 break;
                             case 3:
-                                find_figure = 3;
+                                boardInstance.changeFigure(posX, posY, 3, isWhite, canMove);
                                 break;
                         }
                     }

@@ -93,27 +93,10 @@ public class Pawn extends aFigure {
         enPassantLeft = false;
         enPassantRight = false;
 
-        for (int z = 0; z < 7; z++) {
-            if(posX==z && posY == 0) {
-                boardInstance.fragInstance.startDialog();
-                boardInstance.deleteFigure(posX,posY);
-
-                int i=BoardFragment.find_figure;
-
-                boardInstance.addFigure(posX,posY,i, true, true);
-            }
-            if(posX==z && posY == 7) {
-                boardInstance.fragInstance.startDialog();
-
-                int i=BoardFragment.find_figure;
-
-                boardInstance.deleteFigure(posX,posY);
-                boardInstance.addFigure(posX,posY, i, false, false);
-            }
+        if((posY == 0 && isWhite) || (posY == 7 && !isWhite)) {
+            boardInstance.fragInstance.startDialog(posX, posY, isWhite, canMove);
         }
-
     }
-
 }
 
 
