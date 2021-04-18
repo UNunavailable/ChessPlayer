@@ -84,10 +84,6 @@ public class BoardFragment extends AppCompatDialogFragment {
 
                 boardInstance.addFigure(4,7,Constants.KING, true, true);
                 boardInstance.addFigure(4,0,Constants.KING, false, false);
-
-                startDialog();
-
-
             }
         });
         super.onViewCreated(view, savedInstanceState);

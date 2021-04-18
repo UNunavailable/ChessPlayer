@@ -13,7 +13,7 @@ import com.example.chessplayer.MainActivity;
 import java.util.ArrayList;
 import java.util.zip.CheckedOutputStream;
 
-public class Pawn extends aFigure implements Dialog.ExampleDialogListener{
+public class Pawn extends aFigure {
     private boolean haveMoved = false;
 
     public Pawn(Board boardInstance,ImageView image, int posX, int posY, boolean isWhite, boolean canMove) {
@@ -100,11 +100,10 @@ public class Pawn extends aFigure implements Dialog.ExampleDialogListener{
                 boardInstance.addFigure(posX,posY,Constants.QUEEN, false, false);
             }
         }
-    }
 
-    @Override
-    public void applyDialog(String username, String password) {
-
+        if((posY == 0 && isWhite) || (posY == 7 && !isWhite)) {
+            boardInstance.fragInstance.startDialog();
+        }
     }
 }
 
