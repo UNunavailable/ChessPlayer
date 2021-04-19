@@ -71,22 +71,26 @@ public class Pawn extends aFigure {
     }
 
     public void move(int posX, int posY) {
+        boolean canGiveEnPassant = false;
+        if(Math.abs(this.posY - posY) == 2) canGiveEnPassant = true;
         super.move(posX, posY);
         if(enPassantRight || enPassantLeft) {
             boardInstance.deleteFigure(posX, posY + (isWhite?2:0) - 1);
         }
-        if(boardInstance.checkTile(posX-1, posY) == Constants.WHITEFIGURE
-                || boardInstance.checkTile(posX-1, posY) == Constants.BLACKFIGURE) {
-            if(boardInstance.tiles[posX-1][posY].figure.isWhite != isWhite
-                    && boardInstance.tiles[posX-1][posY].figure instanceof Pawn) {
-                ((Pawn)boardInstance.tiles[posX-1][posY].figure).enPassantRight = true;
+        if(canGiveEnPassant) {
+            if (boardInstance.checkTile(posX - 1, posY) == Constants.WHITEFIGURE
+                    || boardInstance.checkTile(posX - 1, posY) == Constants.BLACKFIGURE) {
+                if (boardInstance.tiles[posX - 1][posY].figure.isWhite != isWhite
+                        && boardInstance.tiles[posX - 1][posY].figure instanceof Pawn) {
+                    ((Pawn) boardInstance.tiles[posX - 1][posY].figure).enPassantRight = true;
+                }
             }
-        }
-        if(boardInstance.checkTile(posX+1, posY) == Constants.WHITEFIGURE
-                || boardInstance.checkTile(posX+1, posY) == Constants.BLACKFIGURE) {
-            if(boardInstance.tiles[posX+1][posY].figure.isWhite != isWhite
-                    && boardInstance.tiles[posX+1][posY].figure instanceof Pawn) {
-                ((Pawn)boardInstance.tiles[posX+1][posY].figure).enPassantRight = true;
+            if (boardInstance.checkTile(posX + 1, posY) == Constants.WHITEFIGURE
+                    || boardInstance.checkTile(posX + 1, posY) == Constants.BLACKFIGURE) {
+                if (boardInstance.tiles[posX + 1][posY].figure.isWhite != isWhite
+                        && boardInstance.tiles[posX + 1][posY].figure instanceof Pawn) {
+                    ((Pawn) boardInstance.tiles[posX + 1][posY].figure).enPassantRight = true;
+                }
             }
         }
         haveMoved = true;
