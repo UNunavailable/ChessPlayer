@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,5 +29,20 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_start:
+                BoardFragment frag = ((BoardFragment) getSupportFragmentManager().findFragmentById(R.id.detail_frag));
+                frag.boardInstance.startNewGame();
+                return true;
+            case R.id.action_restart:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

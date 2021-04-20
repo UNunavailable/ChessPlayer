@@ -37,6 +37,55 @@ public class Board {
         this.board = board;
     }
 
+    public void startNewGame() {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if(tiles[x][y].figure != null) deleteFigure(x, y);
+            }
+        }
+
+        whiteKingPos = null;
+        blackKingPos = null;
+
+        addFigure(0,6,Constants.PAWN, true, true);
+        addFigure(1,6,Constants.PAWN, true, true);
+        addFigure(2,6,Constants.PAWN, true, true);
+        addFigure(3,6,Constants.PAWN, true, true);
+        addFigure(4,6,Constants.PAWN, true, true);
+        addFigure(5,6,Constants.PAWN, true, true);
+        addFigure(6,6,Constants.PAWN, true, true);
+        addFigure(7,6,Constants.PAWN, true, true);
+        addFigure(0,1,Constants.PAWN, false, false);
+        addFigure(1,1,Constants.PAWN, false, false);
+        addFigure(2,1,Constants.PAWN, false, false);
+        addFigure(3,1,Constants.PAWN, false, false);
+        addFigure(4,1,Constants.PAWN, false, false);
+        addFigure(5,1,Constants.PAWN, false, false);
+        addFigure(6,1,Constants.PAWN, false, false);
+        addFigure(7,1,Constants.PAWN, false, false);
+
+        addFigure(0,7,Constants.ROOK, true, true);
+        addFigure(7,7,Constants.ROOK, true, true);
+        addFigure(0,0,Constants.ROOK, false, false);
+        addFigure(7,0,Constants.ROOK, false, false);
+
+        addFigure(1,7,Constants.KNIGHT, true, true);
+        addFigure(6,7,Constants.KNIGHT, true, true);
+        addFigure(1,0,Constants.KNIGHT, false, false);
+        addFigure(6,0,Constants.KNIGHT, false, false);
+
+        addFigure(2,7,Constants.BISHOP, true, true);
+        addFigure(5,7,Constants.BISHOP, true, true);
+        addFigure(2,0,Constants.BISHOP, false, false);
+        addFigure(5,0,Constants.BISHOP, false, false);
+
+        addFigure(3,7,Constants.QUEEN, true, true);
+        addFigure(3,0,Constants.QUEEN, false, false);
+
+        addFigure(4,7,Constants.KING, true, true);
+        addFigure(4,0,Constants.KING, false, false);
+    } // Убирает все фигуры на поле и ставит новые на стандартное положение.
+
     public void init() {
         int top = (int) board.getX();
         int left = (int) board.getY();
@@ -128,17 +177,17 @@ public class Board {
         if(tiles[whereX][whereY].figure != null) deleteFigure(whereX, whereY);
         tiles[posX][posY].figure.move(whereX, whereY);
         changeTurn();
-    };
+    }; // Двигает фигуру из одной точки в другую и вызывает changeTurn()
 
     public void deleteFigure(int posX, int posY) {
         tiles[posX][posY].figure.image.setVisibility(View.GONE);
         tiles[posX][posY].figure = null;
-    };
+    }; // Убирает картинку, занулливает объект в тайле
 
     public void changeFigure(int posX, int posY, int figureId, boolean isWhite, boolean canMove) {
         deleteFigure(posX,posY);
         addFigure(posX, posY, figureId, isWhite, canMove);
-    }
+    } // Меняет фигуру на другую
 
     public void addFigure(int posX, int posY, int figureCode, boolean isWhite, boolean canMove) {
         if(tiles[posX][posY].figure != null) { return; }
@@ -229,7 +278,7 @@ public class Board {
                 }
             }
         }
-    }
+    } // Меняет возможность хода у фигур на противоположное значение
 
     public int[][] checkMove(int posX, int posY, int[][] move, boolean isWhite) {
         if(move.length == 0) return move;
@@ -247,7 +296,7 @@ public class Board {
         int[][] result = new int[canMove.size()][2];
         result = canMove.toArray(result);
         return result;
-    }
+    } // Проверяет возможны ли данные ходы фигуры
 
     public boolean checkFinder(boolean isWhite) {
         int[] kingPos;
@@ -260,7 +309,7 @@ public class Board {
         if(knightCheck(kingPos, isWhite)) return true;
         if(kingCheck(kingPos, isWhite)) return true;
         return false;
-    }
+    } // Проверяет ситуацию на шах
 
     private boolean bishopCheck(int[] kingPos, boolean isWhite) {
         for (int s = 0; s < 4; s++) {
@@ -337,7 +386,7 @@ public class Board {
         return false;
     }
 
-    public void checkMateFinder(Tile attacker, Tile king) {}
+    public void checkMateFinder() {} // Проверяет доску на состояние мата
 
     public void gameEnd() {}; // конец игры
 

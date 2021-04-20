@@ -17,7 +17,6 @@ public class BoardFragment extends DialogFragment {
     Board boardInstance;
     TextView notation;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -33,54 +32,6 @@ public class BoardFragment extends DialogFragment {
             @Override
             public void run() {
                 boardInstance.init();
-            }
-        });
-
-        Button button = (Button) view.findViewById(R.id.button_start);
-        button.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                boardInstance.addFigure(0,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(1,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(2,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(3,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(4,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(5,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(6,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(7,6,Constants.PAWN, true, true);
-                boardInstance.addFigure(0,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(1,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(2,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(3,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(4,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(5,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(6,1,Constants.PAWN, false, false);
-                boardInstance.addFigure(7,1,Constants.PAWN, false, false);
-
-                boardInstance.addFigure(0,7,Constants.ROOK, true, true);
-                boardInstance.addFigure(7,7,Constants.ROOK, true, true);
-                boardInstance.addFigure(0,0,Constants.ROOK, false, false);
-                boardInstance.addFigure(7,0,Constants.ROOK, false, false);
-
-                boardInstance.addFigure(1,7,Constants.KNIGHT, true, true);
-                boardInstance.addFigure(6,7,Constants.KNIGHT, true, true);
-                boardInstance.addFigure(1,0,Constants.KNIGHT, false, false);
-                boardInstance.addFigure(6,0,Constants.KNIGHT, false, false);
-
-                boardInstance.addFigure(2,7,Constants.BISHOP, true, true);
-                boardInstance.addFigure(5,7,Constants.BISHOP, true, true);
-                boardInstance.addFigure(2,0,Constants.BISHOP, false, false);
-                boardInstance.addFigure(5,0,Constants.BISHOP, false, false);
-
-                boardInstance.addFigure(3,7,Constants.QUEEN, true, true);
-                boardInstance.addFigure(3,0,Constants.QUEEN, false, false);
-
-                boardInstance.addFigure(4,7,Constants.KING, true, true);
-                boardInstance.addFigure(4,0,Constants.KING, false, false);
             }
         });
         super.onViewCreated(view, savedInstanceState);
